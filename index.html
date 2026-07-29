@@ -63,24 +63,25 @@
     }
     .choice-box:checked::after{content:"✓";font-size:25px;line-height:1;color:#000;font-weight:700}
     .reason-wrap{display:flex;align-items:flex-end;gap:8px;flex:1;min-width:0}
-    .signature-block{width:390px;max-width:100%;margin:28px 55px 0 auto;text-align:center}
+    .signature-block{width:350px;max-width:100%;margin:40px auto;text-align:center;display:flex;flex-direction:column;align-items:center}
     .signature-toolbar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
     .mode-btn.active{background:#e9f0ff;border-color:#6f8fd7;color:#123b89}
-    .signature-entry-row{display:flex;align-items:flex-end;gap:6px}
-    .signature-label{width:3.5em;flex:0 0 3.5em;text-align:left;white-space:nowrap}
+    .signature-container{width:100%;display:flex;flex-direction:column;gap:8px}
+    .signature-entry-row{display:flex;align-items:flex-end;width:100%}
+    .signature-label{width:4em;flex:0 0 4em;text-align:right;padding-right:10px;white-space:nowrap}
     .signature-stage{
-      position:relative;flex:1;min-width:0;height:78px;border-bottom:1px dotted #000;
-      overflow:hidden;background:#fff
+      position:relative;flex:1;min-width:0;height:70px;border-bottom:1px dotted #000;
+      overflow:hidden;background:#fff;
     }
     .signature-canvas{width:100%;height:100%;display:block;touch-action:none}
     .signature-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none}
     .drawn-signature-image{pointer-events:none}
     .file-input{display:none}
-    .signature-caption{margin:5px 0 0 calc(3.5em + 6px);line-height:1.15}
-    .signature-caption .name-line{display:block;min-height:28px}
-    .position-row{display:flex;align-items:flex-end;gap:6px;margin-top:7px}
-    .position-row > span{width:3.5em;flex:0 0 3.5em;text-align:left;white-space:nowrap}
-    .position-row .line-input{flex:1;min-width:0;max-width:none}
+    .signature-caption{margin:0;line-height:1.15;text-align:center;width:100%;display:flex;justify-content:center}
+    .signature-caption .name-line{display:inline-block;min-height:28px;width:calc(100% - 4em);margin-left:4em;text-align:center}
+    .position-row{display:flex;align-items:flex-end;width:100%}
+    .position-row > span{width:4em;flex:0 0 4em;text-align:right;padding-right:10px;white-space:nowrap}
+    .position-row .line-input{flex:1;min-width:0;max-width:none;text-align:center}
     .clear-sign{margin-top:7px;font-size:16px;padding:4px 9px}
     .notes{margin-top:62px}
     .notes h3{font-size:22px;margin:0 0 6px}
@@ -95,7 +96,7 @@
       .form-row{flex-wrap:wrap}
       .field-group{min-width:260px}
       .choice-list{margin-left:1.2em}
-      .signature-block{margin-right:auto}
+      .signature-block{margin:20px auto;width:100%}
     }
 
     @page{size:A4 portrait;margin:20mm}
@@ -121,8 +122,16 @@
       .choice-row{margin:6px 0}
       .choice-box{width:23px;height:23px}
       .choice-box:checked::after{font-size:21px}
-      .signature-block{margin-top:17px}
-      .signature-stage{height:62px}
+      .signature-block{margin:30px auto 0;width:350px;display:flex;flex-direction:column;align-items:center;text-align:center}
+      .signature-container{width:100%;display:flex;flex-direction:column;gap:5px}
+      .signature-entry-row{display:flex;align-items:flex-end;width:100%}
+      .signature-label{width:4em;flex:0 0 4em;text-align:right;padding-right:10px}
+      .signature-stage{height:60px;flex:1;border-bottom:1px dotted #000!important}
+      .signature-caption{margin:0;width:100%;display:flex;justify-content:center}
+      .signature-caption .name-line{display:inline-block;width:calc(100% - 4em);margin-left:4em;text-align:center}
+      .position-row{display:flex;align-items:flex-end;width:100%}
+      .position-row > span{width:4em;flex:0 0 4em;text-align:right;padding-right:10px}
+      .position-row .line-input{flex:1;border-bottom:1px dotted #000!important;text-align:center}
       .notes{margin-top:40px}
       .notes p{margin:2px 0}
       .footer{font-size:14px;margin-top:8px}
@@ -205,23 +214,26 @@
           <input id="signatureUpload" class="file-input" type="file" accept="image/*" />
         </div>
 
-        <div class="signature-entry-row">
-          <span class="signature-label">ลงชื่อ</span>
-          <div class="signature-stage">
-            <canvas id="signatureCanvas" class="signature-canvas"></canvas>
-            <img id="drawnSignatureImage" class="signature-image drawn-signature-image" alt="ลายเซ็นที่วาด" />
-            <img id="signatureImage" class="signature-image" alt="รูปลายเซ็น" />
+        <div class="signature-container">
+          <div class="signature-entry-row">
+            <span class="signature-label">ลงชื่อ</span>
+            <div class="signature-stage">
+              <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+              <img id="drawnSignatureImage" class="signature-image drawn-signature-image" alt="ลายเซ็นที่วาด" />
+              <img id="signatureImage" class="signature-image" alt="รูปลายเซ็น" />
+            </div>
+          </div>
+
+          <div class="signature-caption">
+            <span class="name-line">(<span id="mirrorName">........................................</span>)</span>
+          </div>
+
+          <div class="position-row">
+            <span>ตำแหน่ง</span>
+            <input id="positionBottom" class="line-input" type="text" />
           </div>
         </div>
-
-        <div class="signature-caption">
-          <span class="name-line">(<span id="mirrorName">........................................</span>)</span>
-        </div>
-
-        <div class="position-row">
-          <span>ตำแหน่ง</span>
-          <input id="positionBottom" class="line-input" type="text" />
-        </div>
+        
         <button class="clear-sign" type="button" id="clearSignature">ล้างลายเซ็น</button>
       </section>
 
