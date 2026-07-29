@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>แบบตอบรับโครงการค่ายเยาวชน พ.ศ. ๒๕๖๙</title>
+  <style>
+    :root{
+      --paper:#ffffff;
+      --bg:#eef1f5;
+      --ink:#000000;
+      --blue:#0645ad;
+      --line:#222;
+      --green:#0b7a38;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"TH Sarabun New","Sarabun",Tahoma,sans-serif}
+    body{font-size:22px;line-height:1.28}
+    .toolbar{
+      position:sticky;top:0;z-index:20;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      padding:10px 18px;background:#fff;border-bottom:1px solid #d8dee8;
+      box-shadow:0 2px 8px rgba(0,0,0,.08)
+    }
+    .toolbar-title{font-weight:700;font-size:20px;color:#18352a}
+    .toolbar-actions{display:flex;gap:10px;flex-wrap:wrap}
+    button,.mode-btn,.upload-label{
+      font:inherit;font-size:18px;border:1px solid #b9c2ce;background:#fff;color:#111;
+      border-radius:8px;padding:8px 14px;cursor:pointer
+    }
+    button:hover,.mode-btn:hover,.upload-label:hover{background:#f2f5f8}
+    .primary{background:var(--green);color:#fff;border-color:var(--green)}
+    .wrap{padding:22px 12px 40px}
+    .paper{
+      width:210mm;min-height:297mm;margin:0 auto;background:var(--paper);
+      box-shadow:0 8px 28px rgba(31,44,61,.16);
+      padding:20mm;
+    }
+    .doc-header{text-align:center;margin-bottom:14px}
+    .doc-header h1{margin:0 0 2px;font-size:30px;line-height:1.2}
+    .doc-header .project{font-weight:700;font-size:22px}
+    .doc-header p{margin:4px 0}
+    .stars{text-align:center;letter-spacing:1px;margin:6px 0 18px}
+    .recipient{margin:0 0 10px}
+    .paragraph{text-align:justify;text-indent:2.5em;margin:0 0 8px}
+    .form-row{display:flex;align-items:flex-end;gap:10px;margin:6px 0;flex-wrap:nowrap}
+    .name-row{margin-top:1.28em}
+    .field-group{display:flex;align-items:flex-end;gap:6px;min-width:0;flex:1}
+    .field-label{white-space:nowrap}
+    .line-input{
+      width:100%;min-width:0;border:0;border-bottom:1px dotted var(--line);outline:none;
+      background:transparent;color:#000;font:inherit;text-align:center;padding:0 4px 1px;
+      height:30px
+    }
+    textarea.line-input{height:54px;resize:none;text-align:left;line-height:1.2}
+    .choice-title{font-weight:700;margin:16px 0 7px 2.5em}
+    .choice-list{margin-left:3.6em}
+    .choice-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+    .choice-box{
+      appearance:none;width:27px;height:27px;border:1.5px solid #000;background:#fff;
+      display:grid;place-items:center;flex:0 0 auto;cursor:pointer
+    }
+    .choice-box:checked::after{content:"✓";font-size:25px;line-height:1;color:#000;font-weight:700}
+    .reason-wrap{display:flex;align-items:flex-end;gap:8px;flex:1;min-width:0}
+    .signature-block{width:390px;max-width:100%;margin:28px 55px 0 auto;text-align:center}
+    .signature-toolbar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+    .mode-btn.active{background:#e9f0ff;border-color:#6f8fd7;color:#123b89}
+    .signature-entry-row{display:flex;align-items:flex-end;gap:6px}
+    .signature-label{width:3.5em;flex:0 0 3.5em;text-align:left;white-space:nowrap}
+    .signature-stage{
+      position:relative;flex:1;min-width:0;height:78px;border-bottom:1px dotted #000;
+      overflow:hidden;background:#fff
+    }
+    .signature-canvas{width:100%;height:100%;display:block;touch-action:none}
+    .signature-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none}
+    .file-input{display:none}
+    .signature-caption{margin:5px 0 0 calc(3.5em + 6px);line-height:1.15}
+    .signature-caption .name-line{display:block;min-height:28px}
+    .position-row{display:flex;align-items:flex-end;gap:6px;margin-top:7px}
+    .position-row > span{width:3.5em;flex:0 0 3.5em;text-align:left;white-space:nowrap}
+    .position-row .line-input{flex:1;min-width:0;max-width:none}
+    .clear-sign{margin-top:7px;font-size:16px;padding:4px 9px}
+    .notes{margin-top:62px}
+    .notes h3{font-size:22px;margin:0 0 6px}
+    .notes p{margin:4px 0}
+    .footer{text-align:center;font-size:16px;color:#555;margin-top:16px}
+    .print-only{display:none}
+
+    @media (max-width: 900px){
+      body{font-size:20px}
+      .toolbar{align-items:flex-start;flex-direction:column}
+      .paper{width:100%;min-height:auto;padding:24px 18px}
+      .form-row{flex-wrap:wrap}
+      .field-group{min-width:260px}
+      .choice-list{margin-left:1.2em}
+      .signature-block{margin-right:auto}
+    }
+
+    @page{size:A4 portrait;margin:20mm}
+    @media print{
+      html,body{background:#fff}
+      body{font-size:19px;line-height:1.18;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .toolbar,.signature-toolbar,.clear-sign{display:none!important}
+      .wrap{padding:0}
+      .paper{
+        width:auto;height:auto;min-height:0;margin:0;box-shadow:none;
+        padding:0;overflow:visible
+      }
+      .doc-header{margin-bottom:9px}
+      .doc-header h1{font-size:26px}
+      .doc-header .project{font-size:20px}
+      .doc-header p{margin:2px 0}
+      .stars{margin:3px 0 12px}
+      .paragraph{margin-bottom:4px}
+      .form-row{margin:3px 0}
+      .name-row{margin-top:1.18em}
+      .line-input{height:25px;color:#000!important}
+      .choice-title{margin-top:10px;margin-bottom:4px}
+      .choice-row{margin:6px 0}
+      .choice-box{width:23px;height:23px}
+      .choice-box:checked::after{font-size:21px}
+      .signature-block{margin-top:17px}
+      .signature-stage{height:62px}
+      .notes{margin-top:40px}
+      .notes p{margin:2px 0}
+      .footer{font-size:14px;margin-top:8px}
+      input,textarea{color:#000!important}
+      .signature-canvas,.signature-image{color:var(--blue)!important}
+    }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="toolbar-title">แบบตอบรับค่ายเยาวชน เทศบาลตำบลพระลับ</div>
+    <div class="toolbar-actions">
+      <button class="primary" type="button" onclick="window.print()">ปริ๊นแบบตอบรับ</button>
+      <button type="button" onclick="saveAsPDF()">บันทึกเป็น PDF</button>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="paper">
+      <header class="doc-header">
+        <h1>แบบตอบรับ</h1>
+        <div class="project">โครงการค่ายเยาวชนเรียนรู้และสืบสานพระราชดำริ<br>ประจำปีงบประมาณ พ.ศ. ๒๕๖๙</div>
+        <p>ระหว่างวันที่ ๒๕ – ๒๖ สิงหาคม ๒๕๖๙</p>
+        <p>ณ สวนสัตว์ขอนแก่น ตำบลคำม่วง อำเภอเขาสวนกวาง จังหวัดขอนแก่น</p>
+      </header>
+
+      <div class="stars">**********************************************</div>
+
+      <p class="recipient">เรียน&nbsp;&nbsp;&nbsp;นายกเทศมนตรีตำบลพระลับ</p>
+      <p class="paragraph">ตามหนังสือเทศบาลตำบลพระลับ เรื่อง ขอความอนุเคราะห์วิทยากร เข้าร่วมโครงการค่ายเยาวชนเรียนรู้และสืบสานพระราชดำริ ประจำปีงบประมาณ พ.ศ. ๒๕๖๙ ในวันที่ ๒๕ – ๒๖ สิงหาคม ๒๕๖๙ ณ สวนสัตว์ขอนแก่น ตำบลคำม่วง อำเภอเขาสวนกวาง จังหวัดขอนแก่น นั้น</p>
+
+      <div class="form-row name-row">
+        <div class="field-group" style="flex:1.2">
+          <span class="field-label">ข้าพเจ้า ชื่อ-สกุล</span>
+          <input id="fullName" class="line-input" type="text" autocomplete="name" />
+        </div>
+        <div class="field-group" style="flex:1">
+          <span class="field-label">ตำแหน่ง</span>
+          <input id="positionTop" class="line-input" type="text" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field-group">
+          <span class="field-label">ที่อยู่</span>
+          <input class="line-input" type="text" autocomplete="street-address" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field-group">
+          <span class="field-label">โทรศัพท์</span>
+          <input class="line-input" type="tel" autocomplete="tel" />
+        </div>
+        <div class="field-group">
+          <span class="field-label">E-mail</span>
+          <input class="line-input" type="email" autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="choice-title">ขอแจ้งความประสงค์</div>
+      <div class="choice-list">
+        <label class="choice-row">
+          <input class="choice-box response-choice" type="checkbox" value="join" />
+          <span>สามารถเข้าร่วมได้</span>
+        </label>
+        <label class="choice-row">
+          <input class="choice-box response-choice" type="checkbox" value="notJoin" />
+          <span>ไม่สามารถเข้าร่วมได้ เนื่องจาก</span>
+          <span class="reason-wrap"><input id="reason" class="line-input" type="text" disabled /></span>
+        </label>
+      </div>
+
+      <section class="signature-block">
+        <div class="signature-toolbar" aria-label="เลือกวิธีลงลายเซ็น">
+          <button class="mode-btn active" type="button" data-mode="draw">เซ็นมือ</button>
+          <label class="upload-label" for="signatureUpload">แทรกรูป</label>
+          <input id="signatureUpload" class="file-input" type="file" accept="image/*" />
+        </div>
+
+        <div class="signature-entry-row">
+          <span class="signature-label">ลงชื่อ</span>
+          <div class="signature-stage">
+            <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+            <img id="signatureImage" class="signature-image" alt="รูปลายเซ็น" />
+          </div>
+        </div>
+
+        <div class="signature-caption">
+          <span class="name-line">(<span id="mirrorName">........................................</span>)</span>
+        </div>
+
+        <div class="position-row">
+          <span>ตำแหน่ง</span>
+          <input id="positionBottom" class="line-input" type="text" />
+        </div>
+        <button class="clear-sign" type="button" id="clearSignature">ล้างลายเซ็น</button>
+      </section>
+
+      <section class="notes">
+        <h3>หมายเหตุ</h3>
+        <p>- กรุณาส่งแบบตอบรับ ภายในวันที่ ๑๐ สิงหาคม ๒๕๖๙ ณ กองการศึกษา</p>
+        <p>- ติดต่อประสานงาน นางสาวเพชรรัตน์ เฉลียดฉลาด โทร. ๐๘๘-๒๘๗๘๕๓๖</p>
+      </section>
+
+      <div class="footer">กองการศึกษา เทศบาลตำบลพระลับ อำเภอเมืองขอนแก่น จังหวัดขอนแก่น</div>
+    </section>
+  </main>
+
+  <script>
+    const fullName = document.getElementById('fullName');
+    const mirrorName = document.getElementById('mirrorName');
+    const positionTop = document.getElementById('positionTop');
+    const positionBottom = document.getElementById('positionBottom');
+    const choices = [...document.querySelectorAll('.response-choice')];
+    const reason = document.getElementById('reason');
+    const modeButtons = [...document.querySelectorAll('.mode-btn')];
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    const upload = document.getElementById('signatureUpload');
+    const signatureImage = document.getElementById('signatureImage');
+    const clearButton = document.getElementById('clearSignature');
+    let currentMode = 'draw';
+    let drawing = false;
+
+    function syncName(){
+      const name = fullName.value.trim();
+      mirrorName.textContent = name || '........................................';
+    }
+    fullName.addEventListener('input', syncName);
+
+    function syncPosition(source, target){
+      target.value = source.value;
+    }
+    positionTop.addEventListener('input', () => syncPosition(positionTop, positionBottom));
+    positionBottom.addEventListener('input', () => syncPosition(positionBottom, positionTop));
+
+    choices.forEach(choice => {
+      choice.addEventListener('change', () => {
+        if (choice.checked) choices.forEach(other => { if (other !== choice) other.checked = false; });
+        const notJoin = choices.find(c => c.value === 'notJoin');
+        reason.disabled = !notJoin.checked;
+        if (reason.disabled) reason.value = '';
+      });
+    });
+
+    function resizeCanvas(){
+      const rect = canvas.getBoundingClientRect();
+      const ratio = Math.max(window.devicePixelRatio || 1, 1);
+      canvas.width = Math.round(rect.width * ratio);
+      canvas.height = Math.round(rect.height * ratio);
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = 2.2;
+      ctx.strokeStyle = '#0645ad';
+    }
+
+    function setMode(mode){
+      currentMode = mode;
+      modeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+      canvas.style.display = mode === 'draw' ? 'block' : 'none';
+      signatureImage.style.display = mode === 'image' ? 'block' : 'none';
+      if (mode === 'draw') setTimeout(resizeCanvas, 0);
+    }
+    modeButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+
+    function pointFromEvent(event){
+      const rect = canvas.getBoundingClientRect();
+      const point = event.touches ? event.touches[0] : event;
+      return { x: point.clientX - rect.left, y: point.clientY - rect.top };
+    }
+    function startDraw(event){
+      event.preventDefault();drawing = true;
+      const p = pointFromEvent(event);ctx.beginPath();ctx.moveTo(p.x,p.y);
+    }
+    function draw(event){
+      if(!drawing) return;event.preventDefault();
+      const p = pointFromEvent(event);ctx.lineTo(p.x,p.y);ctx.stroke();
+    }
+    function stopDraw(event){ if(drawing){event.preventDefault();drawing=false;ctx.closePath();} }
+    ['mousedown','touchstart'].forEach(e => canvas.addEventListener(e,startDraw,{passive:false}));
+    ['mousemove','touchmove'].forEach(e => canvas.addEventListener(e,draw,{passive:false}));
+    ['mouseup','mouseleave','touchend','touchcancel'].forEach(e => canvas.addEventListener(e,stopDraw,{passive:false}));
+
+    upload.addEventListener('change', () => {
+      const file = upload.files && upload.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = e => removeImageBackground(e.target.result);
+      reader.readAsDataURL(file);
+    });
+
+    function removeImageBackground(dataUrl){
+      const image = new Image();
+      image.onload = () => {
+        const workCanvas = document.createElement('canvas');
+        const maxSize = 1600;
+        const scale = Math.min(1, maxSize / Math.max(image.naturalWidth, image.naturalHeight));
+        workCanvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        workCanvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        const workCtx = workCanvas.getContext('2d', { willReadFrequently:true });
+        workCtx.drawImage(image, 0, 0, workCanvas.width, workCanvas.height);
+
+        const imageData = workCtx.getImageData(0, 0, workCanvas.width, workCanvas.height);
+        const pixels = imageData.data;
+        const samples = [];
+        const stepX = Math.max(1, Math.floor(workCanvas.width / 40));
+        const stepY = Math.max(1, Math.floor(workCanvas.height / 40));
+
+        for(let x = 0; x < workCanvas.width; x += stepX){
+          samples.push(pixelAt(pixels, workCanvas.width, x, 0));
+          samples.push(pixelAt(pixels, workCanvas.width, x, workCanvas.height - 1));
+        }
+        for(let y = 0; y < workCanvas.height; y += stepY){
+          samples.push(pixelAt(pixels, workCanvas.width, 0, y));
+          samples.push(pixelAt(pixels, workCanvas.width, workCanvas.width - 1, y));
+        }
+
+        const background = medianColor(samples);
+        const softStart = 36;
+        const softEnd = 105;
+
+        for(let i = 0; i < pixels.length; i += 4){
+          const distance = Math.hypot(
+            pixels[i] - background[0],
+            pixels[i + 1] - background[1],
+            pixels[i + 2] - background[2]
+          );
+          if(distance <= softStart){
+            pixels[i + 3] = 0;
+          }else if(distance < softEnd){
+            pixels[i + 3] = Math.round(pixels[i + 3] * (distance - softStart) / (softEnd - softStart));
+          }
+        }
+
+        workCtx.putImageData(imageData, 0, 0);
+        signatureImage.src = workCanvas.toDataURL('image/png');
+        setMode('image');
+      };
+      image.src = dataUrl;
+    }
+
+    function pixelAt(pixels, width, x, y){
+      const index = (y * width + x) * 4;
+      return [pixels[index], pixels[index + 1], pixels[index + 2]];
+    }
+
+    function medianColor(colors){
+      return [0, 1, 2].map(channel => {
+        const values = colors.map(color => color[channel]).sort((a, b) => a - b);
+        return values[Math.floor(values.length / 2)];
+      });
+    }
+
+    clearButton.addEventListener('click', () => {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      signatureImage.removeAttribute('src');
+      upload.value = '';
+      setMode('draw');
+    });
+
+    function saveAsPDF(){
+      alert('เลือกเครื่องพิมพ์ “บันทึกเป็น PDF” หรือ “Save as PDF” ในหน้าต่างถัดไป');
+      window.print();
+    }
+
+    window.addEventListener('resize', () => { if(currentMode === 'draw') resizeCanvas(); });
+    syncName();
+    setMode('draw');
+  </script>
+
+</body>
+</html>
