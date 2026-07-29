@@ -73,6 +73,7 @@
     }
     .signature-canvas{width:100%;height:100%;display:block;touch-action:none}
     .signature-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none}
+    .drawn-signature-image{pointer-events:none}
     .file-input{display:none}
     .signature-caption{margin:5px 0 0 calc(3.5em + 6px);line-height:1.15}
     .signature-caption .name-line{display:block;min-height:28px}
@@ -126,6 +127,8 @@
       .footer{font-size:14px;margin-top:8px}
       input,textarea{color:#000!important}
       .signature-canvas,.signature-image{color:var(--blue)!important}
+      body[data-signature-mode="draw"] .signature-canvas{display:none!important}
+      body[data-signature-mode="draw"] .drawn-signature-image[src]{display:block!important}
     }
 </style>
 </head>
@@ -205,6 +208,7 @@
           <span class="signature-label">ลงชื่อ</span>
           <div class="signature-stage">
             <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+            <img id="drawnSignatureImage" class="signature-image drawn-signature-image" alt="ลายเซ็นที่วาด" />
             <img id="signatureImage" class="signature-image" alt="รูปลายเซ็น" />
           </div>
         </div>
@@ -240,6 +244,7 @@
     const modeButtons = [...document.querySelectorAll('.mode-btn')];
     const canvas = document.getElementById('signatureCanvas');
     const ctx = canvas.getContext('2d');
+    const drawnSignatureImage = document.getElementById('drawnSignatureImage');
     const upload = document.getElementById('signatureUpload');
     const signatureImage = document.getElementById('signatureImage');
     const clearButton = document.getElementById('clearSignature');
@@ -281,6 +286,7 @@
 
     function setMode(mode){
       currentMode = mode;
+      document.body.dataset.signatureMode = mode;
       modeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
       canvas.style.display = mode === 'draw' ? 'block' : 'none';
       signatureImage.style.display = mode === 'image' ? 'block' : 'none';
@@ -301,7 +307,14 @@
       if(!drawing) return;event.preventDefault();
       const p = pointFromEvent(event);ctx.lineTo(p.x,p.y);ctx.stroke();
     }
-    function stopDraw(event){ if(drawing){event.preventDefault();drawing=false;ctx.closePath();} }
+    function stopDraw(event){
+      if(drawing){
+        event.preventDefault();
+        drawing = false;
+        ctx.closePath();
+        drawnSignatureImage.src = canvas.toDataURL('image/png');
+      }
+    }
     ['mousedown','touchstart'].forEach(e => canvas.addEventListener(e,startDraw,{passive:false}));
     ['mousemove','touchmove'].forEach(e => canvas.addEventListener(e,draw,{passive:false}));
     ['mouseup','mouseleave','touchend','touchcancel'].forEach(e => canvas.addEventListener(e,stopDraw,{passive:false}));
@@ -378,6 +391,7 @@
 
     clearButton.addEventListener('click', () => {
       ctx.clearRect(0,0,canvas.width,canvas.height);
+      drawnSignatureImage.removeAttribute('src');
       signatureImage.removeAttribute('src');
       upload.value = '';
       setMode('draw');
@@ -388,7 +402,6 @@
       window.print();
     }
 
-    window.addEventListener('resize', () => { if(currentMode === 'draw') resizeCanvas(); });
     syncName();
     setMode('draw');
   </script>
