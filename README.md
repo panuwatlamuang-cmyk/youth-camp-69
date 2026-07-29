@@ -1,1 +1,1 @@
-# youth-camp-69
+# youth-camp
