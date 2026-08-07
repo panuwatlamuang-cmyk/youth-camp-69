@@ -131,7 +131,7 @@
       .signature-caption .name-line{display:inline-block;width:calc(100% - 4em);margin-left:4em;text-align:center}
       .position-row{display:flex;align-items:flex-end;width:100%}
       .position-row > span{width:4em;flex:0 0 4em;text-align:right;padding-right:10px}
-      .position-row .line-input{flex:1;border-bottom:0!important;text-align:center}
+      .position-row .line-input{flex:1;border-bottom:1px dotted #000!important;text-align:center}
       .notes{margin-top:40px}
       .notes p{margin:2px 0}
       .footer{font-size:14px;margin-top:8px}
@@ -149,8 +149,8 @@
     .signature-tabs button{padding:6px;border:0;border-radius:7px;background:transparent;color:#5a6676;font:inherit;font-size:14px;cursor:pointer}
     .signature-tabs button.active{background:#fff;color:#153861;font-weight:700;box-shadow:0 1px 5px rgba(26,43,63,.12)}
     .signature-caption{display:flex;flex-direction:column;align-items:center;padding:6px 12px 8px;color:#263446;text-align:center;font-size:17px}
-    .signature-sign-row{width:100%;display:grid;grid-template-columns:4em 125px 4em;align-items:end;justify-content:center;gap:3px}
-    .signature-label,.signature-role{width:4em;padding-bottom:1px;white-space:nowrap}.signature-label{text-align:right;padding-right:8px}.signature-role{visibility:hidden}
+    .signature-sign-row{width:100%;display:grid;grid-template-columns:auto 125px auto;align-items:end;justify-content:center;gap:3px}
+    .signature-label,.signature-role{padding-bottom:1px;white-space:nowrap}
     .signature-placement{min-width:0;width:125px;justify-self:center}
     .signature-stage{position:relative;width:100%;height:82px;display:grid;align-items:end;border-bottom:1px dotted #536170;background:linear-gradient(#fff,#fff) padding-box,repeating-linear-gradient(0deg,transparent 0 19px,#f2f4f7 20px);overflow:visible}
     .draw-panel{position:relative;width:100%;height:100%}
@@ -162,7 +162,7 @@
     .uploaded-wrap{width:100%;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center}
     .uploaded-wrap img{max-width:88%;max-height:76px;object-fit:contain;object-position:center bottom}
     .replace-image{position:absolute;right:6px;bottom:5px;padding:2px 7px;border:1px solid #d4dbe3;border-radius:5px;background:rgba(255,255,255,.92);color:#5f6b79;cursor:pointer;font-size:11px}
-    .mirrored-name{width:125px;min-height:23px;margin:0 auto;padding-top:2px;color:#0645ad;font-size:18px;text-align:center}
+    .mirrored-name{min-height:23px;padding-top:2px;color:#0645ad;font-size:18px}
     .clear-signature{margin-top:5px;padding:3px 8px;border:1px solid #d7dde4;border-radius:5px;background:rgba(255,255,255,.92);color:#667181;font:inherit;font-size:12px;cursor:pointer}
     [hidden]{display:none!important}
 
@@ -178,11 +178,10 @@
       .uploaded-wrap{position:absolute;inset:0 0 1px}
       .uploaded-wrap img{max-height:35px;object-position:center bottom}
       .signature-caption{padding:0 4px 1px;font-size:15px}
-      .signature-sign-row{grid-template-columns:4em 95px 4em;gap:2px}
+      .signature-sign-row{grid-template-columns:auto 95px auto;gap:2px}
       .signature-placement{width:95px}
-      .mirrored-name{width:95px;min-height:15px;margin:0 auto;padding-top:0;color:#000!important;font-size:15px;text-align:center}
+      .mirrored-name{min-height:15px;padding-top:0;color:#000!important;font-size:15px}
       .signature-stage .upload-label,.replace-image{display:none!important}
-      .position-row .line-input{border-bottom:0!important;text-align:center}
     }
 
   </style>
