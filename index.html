@@ -1,497 +1,1185 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>แบบตอบรับโครงการค่ายเยาวชน ๒๕๖๙</title>
-  <style>
-    :root{
-      --paper:#ffffff;
-      --bg:#eef1f5;
-      --ink:#000000;
-      --blue:#0645ad;
-      --line:#222;
-      --green:#0b7a38;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"TH Sarabun New","Sarabun",Tahoma,sans-serif}
-    body{font-size:22px;line-height:1.28}
-    .toolbar{
-      position:sticky;top:0;z-index:20;
-      display:flex;align-items:center;justify-content:space-between;gap:16px;
-      padding:10px 18px;background:#fff;border-bottom:1px solid #d8dee8;
-      box-shadow:0 2px 8px rgba(0,0,0,.08)
-    }
-    .toolbar-title{font-weight:700;font-size:20px;color:#18352a}
-    .toolbar-actions{display:flex;gap:10px;flex-wrap:wrap}
-    button,.mode-btn,.upload-label{
-      font:inherit;font-size:18px;border:1px solid #b9c2ce;background:#fff;color:#111;
-      border-radius:8px;padding:8px 14px;cursor:pointer
-    }
-    button:hover,.mode-btn:hover,.upload-label:hover{background:#f2f5f8}
-    .primary{background:var(--green);color:#fff;border-color:var(--green)}
-    .wrap{padding:22px 12px 40px}
-    .paper{
-      width:210mm;min-height:297mm;margin:0 auto;background:var(--paper);
-      box-shadow:0 8px 28px rgba(31,44,61,.16);
-      padding:20mm;
-    }
-    .doc-header{text-align:center;margin-bottom:14px}
-    .doc-header h1{margin:0 0 2px;font-size:30px;line-height:1.2}
-    .doc-header .project{font-weight:700;font-size:22px}
-    .doc-header p{margin:4px 0}
-    .stars{text-align:center;letter-spacing:1px;margin:6px 0 18px}
-    .recipient{margin:0 0 10px}
-    .paragraph{text-align:justify;text-indent:2.5em;margin:0 0 8px}
-    .form-row{display:flex;align-items:flex-end;gap:10px;margin:6px 0;flex-wrap:nowrap}
-    .name-row{margin-top:1.28em}
-    .field-group{display:flex;align-items:flex-end;gap:6px;min-width:0;flex:1}
-    .field-label{white-space:nowrap}
-    .line-input{
-      width:100%;min-width:0;border:0;border-bottom:1px dotted var(--line);outline:none;
-      background:transparent;color:#000;font:inherit;text-align:center;padding:0 4px 1px;
-      height:30px
-    }
-    .address-input{text-align:left}
-    textarea.line-input{height:54px;resize:none;text-align:left;line-height:1.2}
-    .choice-title{font-weight:700;margin:16px 0 7px 2.5em}
-    .choice-list{margin-left:3.6em}
-    .choice-row{display:flex;align-items:center;gap:12px;margin:10px 0}
-    .choice-box{
-      appearance:none;width:27px;height:27px;border:1.5px solid #000;background:#fff;
-      display:grid;place-items:center;flex:0 0 auto;cursor:pointer
-    }
-    .choice-box:checked::after{content:"✓";font-size:25px;line-height:1;color:#000;font-weight:700}
-    .reason-wrap{display:flex;align-items:flex-end;gap:8px;flex:1;min-width:0}
-    .signature-block{width:350px;max-width:100%;margin:40px auto;text-align:center;display:flex;flex-direction:column;align-items:center}
-    .signature-toolbar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-    .mode-btn.active{background:#e9f0ff;border-color:#6f8fd7;color:#123b89}
-    .signature-container{width:100%;display:flex;flex-direction:column;gap:8px}
-    .signature-entry-row{display:flex;align-items:flex-end;width:100%}
-    .signature-label{width:4em;flex:0 0 4em;text-align:right;padding-right:10px;white-space:nowrap}
-    .signature-stage{
-      position:relative;flex:1;min-width:0;height:70px;border-bottom:1px dotted #000;
-      overflow:hidden;background:#fff;
-    }
-    .signature-canvas{width:100%;height:100%;display:block;touch-action:none}
-    .signature-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none}
-    .drawn-signature-image{pointer-events:none}
-    .file-input{display:none}
-    .signature-caption{margin:0;line-height:1.15;text-align:center;width:100%;display:flex;justify-content:center}
-    .signature-caption .name-line{display:inline-block;min-height:28px;width:calc(100% - 4em);margin-left:4em;text-align:center}
-    .position-row{display:flex;align-items:flex-end;width:100%}
-    .position-row > span{width:4em;flex:0 0 4em;text-align:right;padding-right:10px;white-space:nowrap}
-    .position-row .line-input{flex:1;min-width:0;max-width:none;text-align:center}
-    .clear-sign{margin-top:7px;font-size:16px;padding:4px 9px}
-    .notes{margin-top:62px}
-    .notes h3{font-size:22px;margin:0 0 6px}
-    .notes p{margin:4px 0}
-    .footer{text-align:center;font-size:16px;color:#555;margin-top:16px}
-    .print-only{display:none}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบสแกนใบหน้าลงเวลาพนักงาน (Face Recognition Check-in Demo)</title>
 
-    @media (max-width: 900px){
-      body{font-size:20px}
-      .toolbar{align-items:flex-start;flex-direction:column}
-      .paper{width:100%;min-height:auto;padding:24px 18px}
-      .form-row{flex-wrap:wrap}
-      .field-group{min-width:260px}
-      .choice-list{margin-left:1.2em}
-      .signature-block{margin:20px auto;width:100%}
-    }
-
-    @page{size:A4 portrait;margin:20mm}
-    @media print{
-      html,body{background:#fff}
-      body{font-size:20px;line-height:1.18;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-      .toolbar,.signature-toolbar,.clear-sign{display:none!important}
-      .wrap{padding:0}
-      .paper{
-        width:auto;height:auto;min-height:0;margin:0;box-shadow:none;
-        padding:0;overflow:visible
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
       }
-      .doc-header{margin-bottom:9px}
-      .doc-header h1{font-size:26px}
-      .doc-header .project{font-size:20px}
-      .doc-header p{margin:2px 0}
-      .stars{margin:3px 0 12px}
-      .paragraph{margin-bottom:4px}
-      .form-row{margin:3px 0}
-      .name-row{margin-top:1.18em}
-      .line-input{height:25px;color:#000!important}
-      .choice-title{margin-top:10px;margin-bottom:4px}
-      .choice-row{margin:6px 0}
-      .choice-box{width:23px;height:23px}
-      .choice-box:checked::after{font-size:21px}
-      .signature-block{margin:30px auto 0;width:350px;display:flex;flex-direction:column;align-items:center;text-align:center}
-      .signature-container{width:100%;display:flex;flex-direction:column;gap:5px}
-      .signature-entry-row{display:flex;align-items:flex-end;width:100%}
-      .signature-label{width:4em;flex:0 0 4em;text-align:right;padding-right:10px}
-      .signature-stage{height:52px;flex:1;border-bottom:1px dotted #000!important;overflow:visible}
-      .signature-caption{margin:0;width:100%;display:flex;justify-content:center}
-      .signature-caption .name-line{display:inline-block;width:calc(100% - 4em);margin-left:4em;text-align:center}
-      .position-row{display:flex;align-items:flex-end;width:100%}
-      .position-row > span{width:4em;flex:0 0 4em;text-align:right;padding-right:10px}
-      .position-row .line-input{flex:1;border-bottom:0!important;text-align:center}
-      .notes{margin-top:40px}
-      .notes p{margin:2px 0}
-      .footer{font-size:14px;margin-top:8px}
-      input,textarea{color:#000!important}
-      .signature-canvas,.signature-image{color:var(--blue)!important}
-      body[data-signature-mode="draw"] .signature-canvas{display:none!important}
-      body[data-signature-mode="draw"] .drawn-signature-image[src]{display:block!important;width:100%!important;height:52px!important;object-fit:contain!important;object-position:center bottom!important;transform:scale(.88);transform-origin:center bottom}
     }
-
-
-    /* Signature system matched to the provided example */
-    .signature-block{width:53%;max-width:100%;margin:22px 0 0 auto;text-align:center}
-    .signature-card{border:1px solid #d6dde6;border-radius:12px;background:#fbfcfd;overflow:hidden}
-    .signature-tabs{display:grid;grid-template-columns:repeat(2,1fr);padding:5px;background:#edf1f5}
-    .signature-tabs button{padding:6px;border:0;border-radius:7px;background:transparent;color:#5a6676;font:inherit;font-size:14px;cursor:pointer}
-    .signature-tabs button.active{background:#fff;color:#153861;font-weight:700;box-shadow:0 1px 5px rgba(26,43,63,.12)}
-    .signature-caption{display:flex;flex-direction:column;align-items:center;padding:6px 12px 8px;color:#263446;text-align:center;font-size:17px}
-    .signature-sign-row{width:100%;display:grid;grid-template-columns:4em 125px 4em;align-items:end;justify-content:center;gap:3px}
-    .signature-label,.signature-role{width:4em;padding-bottom:1px;white-space:nowrap}.signature-label{text-align:right;padding-right:8px}.signature-role{visibility:hidden}
-    .signature-placement{min-width:0;width:125px;justify-self:center}
-    .signature-stage{position:relative;width:100%;height:82px;display:grid;align-items:end;border-bottom:1px dotted #536170;background:linear-gradient(#fff,#fff) padding-box,repeating-linear-gradient(0deg,transparent 0 19px,#f2f4f7 20px);overflow:visible}
-    .draw-panel{position:relative;width:100%;height:100%}
-    .signature-stage canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}
-    .drawn-signature-print{display:none}
-    .signature-stage .upload-label{width:90%;height:74px;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px dashed #a8b3c0;border-radius:8px;background:transparent;color:#153861;cursor:pointer;font-size:15px;padding:0}
-    .signature-stage .upload-label small{margin-top:2px;color:#8993a0;font-size:11px}
-    .signature-stage .upload-label input,.replace-image input{display:none}
-    .uploaded-wrap{width:100%;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center}
-    .uploaded-wrap img{max-width:88%;max-height:76px;object-fit:contain;object-position:center bottom}
-    .replace-image{position:absolute;right:6px;bottom:5px;padding:2px 7px;border:1px solid #d4dbe3;border-radius:5px;background:rgba(255,255,255,.92);color:#5f6b79;cursor:pointer;font-size:11px}
-    .mirrored-name{width:125px;min-height:23px;margin:0 auto;padding-top:2px;color:#0645ad;font-size:18px;text-align:center}
-    .clear-signature{margin-top:5px;padding:3px 8px;border:1px solid #d7dde4;border-radius:5px;background:rgba(255,255,255,.92);color:#667181;font:inherit;font-size:12px;cursor:pointer}
-    [hidden]{display:none!important}
-
-    @media (max-width:900px){.signature-block{width:100%;margin:20px auto 0}}
-
-    @media print{
-      .signature-tabs,.clear-signature{display:none!important}
-      .signature-block{width:45%;margin:5px 0 0 auto}
-      .signature-card{border:0;background:#fff}
-      .signature-stage{height:39px;border-bottom:1px dotted #000;background:#fff}
-      .signature-stage canvas{display:none!important}
-      .drawn-signature-print[src]{position:absolute;right:2px;bottom:1px;left:2px;display:block!important;width:calc(100% - 4px);height:calc(100% - 2px);object-fit:contain;object-position:center bottom}
-      .uploaded-wrap{position:absolute;inset:0 0 1px}
-      .uploaded-wrap img{max-height:35px;object-position:center bottom}
-      .signature-caption{padding:0 4px 1px;font-size:15px}
-      .signature-sign-row{grid-template-columns:4em 95px 4em;gap:2px}
-      .signature-placement{width:95px}
-      .mirrored-name{width:95px;min-height:15px;margin:0 auto;padding-top:0;color:#000!important;font-size:15px;text-align:center}
-      .signature-stage .upload-label,.replace-image{display:none!important}
-      .position-row .line-input{border-bottom:0!important;text-align:center}
-    }
-
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-/* ปรับช่องตำแหน่งใต้ลายเซ็นให้ชิดซ้าย */
-.position-row { justify-content: flex-start; }
-.position-row > span { text-align: left !important; padding-right: 8px; }
-.position-row .line-input { text-align: left !important; }
-@media print {
-  .position-row { justify-content: flex-start !important; }
-  .position-row > span { text-align: left !important; }
-  .position-row .line-input { text-align: left !important; border-bottom: 0 !important; }
-}
-</style>
+  <!-- Face-API.js Vladmandic Fork @1.7.12 -->
+  <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.js"></script>
+
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+    .gradient-border {
+      position: relative;
+      border-radius: 0.75rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+      padding: 1px;
+    }
+    .glass-panel {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .pulse-animation {
+      animation: pulse-ring 2.5s infinite ease-in-out;
+    }
+  </style>
 </head>
-<body>
-  <div class="toolbar">
-    <div class="toolbar-title">แบบตอบรับค่ายเยาวชนฯ กองศึกษา ทต.พระลับ</div>
-    <div class="toolbar-actions">
-      <button class="primary" type="button" onclick="window.print()">ปริ๊นแบบตอบรับ</button>
-      <button type="button" onclick="saveAsPDF()">บันทึกเป็น PDF</button>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+  <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-40 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-start">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
+            <i class="fa-solid me-0 fa-id-badge text-xl text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-slate-100 tracking-tight flex items-center gap-2">
+              ระบบสแกนใบหน้าลงเวลาพนักงาน
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30">v2.5 Division Auto-ID</span>
+            </h1>
+            <p class="text-xs text-slate-400">ระบบจำแนก กอง/กลุ่มหน่วยงาน และลงเวลางานด้วย AI (TinyFaceDetector)</p>
+          </div>
+        </div>
+        <button id="mobileMenuBtn" onclick="toggleMobileConfig()" class="md:hidden p-2 text-slate-400 hover:text-white focus:outline-none">
+          <i class="fa-solid fa-sliders text-lg"></i>
+        </button>
+      </div>
+
+      <div id="configPanel" class="w-full md:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-800/80 p-2 rounded-xl border border-slate-700/60">
+        <div class="flex items-center px-2 text-xs text-slate-400 whitespace-nowrap">
+          <i class="fa-solid fa-cloud-arrow-up text-sky-400 mr-2"></i>
+          <span>Google Apps Script URL:</span>
+        </div>
+        <div class="relative flex-1 sm:w-64">
+          <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec" 
+                 class="w-full bg-slate-900 text-xs text-slate-200 placeholder-slate-500 px-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-sky-500 transition-colors">
+        </div>
+        <button onclick="saveScriptUrl()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 shadow-sm">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>บันทึก URL</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="iframeNoticeBanner" class="hidden max-w-7xl mx-auto w-full px-4 pt-4">
+    <div class="bg-amber-950/80 border border-amber-600/60 rounded-xl p-4 text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg">
+      <div class="flex items-start gap-3">
+        <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xl mt-0.5"></i>
+        <div>
+          <h4 class="font-bold text-sm text-amber-300">แจ้งเตือนเกี่ยวกับ Canvas Preview / Sandboxed Frame</h4>
+          <p class="text-xs text-amber-200/90 mt-0.5">
+            กล้องอาจถูกบล็อกสิทธิ์เพราะกำลังเปิดผ่าน Preview กรุณากดดาวน์โหลดไฟล์ <code class="bg-amber-900/60 px-1 py-0.5 rounded text-amber-100">index.html</code> แล้วเปิดไฟล์ตรงๆ ในเบราว์เซอร์ เพื่อใช้งานกล้องได้เต็มรูปแบบ
+          </p>
+        </div>
+      </div>
+      <button onclick="closeIframeNotice()" class="text-xs text-amber-400 hover:text-white underline whitespace-nowrap self-end sm:self-center">
+        รับทราบ / ซ่อน
+      </button>
     </div>
   </div>
 
-  <main class="wrap">
-    <section class="paper">
-      <header class="doc-header">
-        <h1>แบบตอบรับ</h1>
-        <div class="project">โครงการค่ายเยาวชนเรียนรู้งานสืบสานพระราชดำริ</div>
-        <p>ประจำปีงบประมาณ พ.ศ.๒๕๖๙</p>
-        <p>ระหว่างวันที่ ๒๕ – ๒๖ สิงหาคม ๒๕๖๙</p>
-        <p>ณ นาฝายคันทรีวิว แอนด์ รีสอร์ท ตำบลนาฝาย อำเภอภูผาม่าน จังหวัดขอนแก่น</p>
-      </header>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 flex-1">
 
-      <div class="stars">**********************************************</div>
-
-      <p class="recipient">เรียน&nbsp;&nbsp;&nbsp;นายกเทศมนตรีตำบลพระลับ</p>
-      <p class="paragraph">     ตามที่ หนังสือเทศบาลตำบลพระลับเรื่องขอความอนุเคราะห์วิทยากรเข้าร่วมโครงการค่ายเยาวชนเรียนรู้งานสืบสานพระราชดำริ ประจำปีงบประมาณ ๒๕๖๙ ระหว่างวันที่ ๒๕ – ๒๖ สิงหาคม ๒๕๖๙ ณ นาฝายคันทรีวิว แอนด์ รีสอร์ท ตำบลนาฝาย อำเภอภูผาม่าน จังหวัดขอนแก่น นั้น</p>
-     <div class="form-row name-row">
-       
-        <div class="field-group" style="flex:1.2">
-          <span class="field-label">ข้าพเจ้า ชื่อ-สกุล</span>
-          <input id="fullName" class="line-input" type="text" autocomplete="name" />
+    <section class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl relative overflow-hidden">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-user-plus text-sky-400"></i>
+            ส่วนที่ 1: ลงทะเบียนข้อมูลพนักงาน & จัดหมวดหมู่ กอง/กลุ่มหน่วยงาน
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            เลือกกอง/กลุ่มงาน ระบบจะเจนรหัสขึ้นต้น (Prefix) ให้โดยอัตโนมัติ อัปโหลดรูปภาพใบหน้าชัดเจน 1 รูปต่อคน
+          </p>
         </div>
-        <div class="field-group" style="flex:1">
-          <span class="field-label">ตำแหน่ง</span>
-          <input id="positionTop" class="line-input" type="text" />
-        </div>
-      </div>
 
-      <div class="form-row">
-        <div class="field-group">
-          <span class="field-label">ที่อยู่</span>
-          <input class="line-input address-input" type="text" autocomplete="street-address" />
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="addEmployeeForm()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-plus text-sky-400"></i>
+            <span>+ เพิ่มฟอร์มพนักงาน</span>
+          </button>
+          
+          <button onclick="buildFaceDatabase()" id="btnBuildDatabase" class="px-5 py-2 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-sky-500/20 transition-all transform active:scale-95 flex items-center gap-2">
+            <i class="fa-solid fa-brain"></i>
+            <span>Build Face Database</span>
+          </button>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="field-group">
-          <span class="field-label">โทรศัพท์</span>
-          <input class="line-input" type="tel" autocomplete="tel" />
-        </div>
-        <div class="field-group">
-          <span class="field-label">E-mail</span>
-          <input class="line-input" type="email" autocomplete="email" />
-        </div>
+      <div class="bg-slate-950/60 rounded-xl p-3 mb-6 border border-slate-800 text-xs flex flex-wrap items-center gap-3">
+        <span class="font-bold text-slate-300 flex items-center gap-1">
+          <i class="fa-solid fa-sitemap text-indigo-400"></i>
+          รหัสขึ้นต้นตาม กอง/หน่วยงาน:
+        </span>
+        <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700"><strong class="text-sky-400">OFF-</strong> สำนักปลัด</span>
+        <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700"><strong class="text-sky-400">FIN-</strong> กองคลัง</span>
+        <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700"><strong class="text-sky-400">EDU-</strong> กองการศึกษา</span>
+        <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700"><strong class="text-sky-400">ENG-</strong> กองช่าง</span>
+        <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700"><strong class="text-sky-400">PHE-</strong> กองสาธารณสุขและสิ่งแวดล้อม</span>
       </div>
 
-      <div class="choice-title">ขอแจ้งความประสงค์</div>
-      <div class="choice-list">
-        <label class="choice-row">
-          <input class="choice-box response-choice" type="checkbox" value="join" />
-          <span>สามารถเข้าร่วมได้</span>
-        </label>
-        <label class="choice-row">
-          <input class="choice-box response-choice" type="checkbox" value="notJoin" />
-          <span>ไม่สามารถเข้าร่วมได้ เนื่องจาก</span>
-          <span class="reason-wrap"><input id="reason" class="line-input" type="text" disabled /></span>
-        </label>
+      <div id="formsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Forms dynamically injected via JS -->
       </div>
 
-      <section class="signature-block">
-        <div class="signature-card" data-signature data-name-input="fullName">
-          <div class="signature-tabs" role="tablist" aria-label="เลือกวิธีลงลายเซ็น">
-            <button type="button" class="active" data-mode="draw">เซ็นมือ</button>
-            <button type="button" data-mode="upload">แทรกรูป (ลบพื้นหลัง)</button>
+      <div id="buildProgressContainer" class="hidden mt-6 p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-xs font-semibold">
+          <span id="buildStatusText" class="text-sky-400 flex items-center gap-2">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            กำลังประมวลผลสกัดข้อมูลใบหน้า (Face Descriptors)...
+          </span>
+          <span id="buildPercentText" class="text-slate-400">0%</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+          <div id="buildProgressBar" class="bg-gradient-to-r from-sky-500 to-indigo-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+      <div class="mb-4 pb-3 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-camera text-emerald-400"></i>
+            ส่วนที่ 2: สแกนใบหน้าลงเวลา (Scan & Auto Check-In/Out)
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            ระบบล็อคใบหน้าแม่นยำสูง สแกนอัตโนมัติแยก เข้างาน (<12.00 น.) / ออกงาน (≥12.00 น.)
+          </p>
+        </div>
+
+        <!-- Time Shift & Accuracy Status Badges -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div id="currentShiftBadge" class="px-3 py-1.5 rounded-xl bg-sky-950/80 text-sky-300 border border-sky-800/80 text-xs font-semibold flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-clock text-sky-400"></i>
+            <span id="shiftText">โหมดเข้างาน (< 12:00 น.)</span>
           </div>
-          <div class="signature-caption">
-            <div class="signature-sign-row">
-              <span class="signature-label">ลงชื่อ</span>
-              <div class="signature-placement">
-                <div class="signature-stage">
-                  <div class="draw-panel">
-                    <canvas aria-label="พื้นที่เซ็นลายมือชื่อ"></canvas>
-                    <img class="drawn-signature-print" alt="" aria-hidden="true">
+          <div class="px-3 py-1.5 rounded-xl bg-indigo-950/80 text-indigo-300 border border-indigo-800/80 text-xs font-semibold flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-shield-halved text-indigo-400"></i>
+            <span>ล็อคใบหน้าแม่นยำสูง (Strict 0.40)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-7 flex flex-col items-center space-y-3">
+          <div class="relative w-full aspect-video bg-slate-950 rounded-2xl border-2 border-slate-800 overflow-hidden shadow-2xl flex items-center justify-center group">
+            
+            <video id="webcam" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-100"></video>
+            <canvas id="overlayCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+
+            <!-- Placeholder State when camera is inactive -->
+            <div id="cameraPlaceholder" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-6 text-center space-y-3">
+              <div class="w-16 h-16 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-slate-400 text-2xl">
+                <i class="fa-solid fa-video-slash"></i>
+              </div>
+              <div>
+                <h3 class="text-slate-200 font-semibold text-sm">กล้องยังไม่ได้เปิดใช้งาน</h3>
+                <p class="text-slate-400 text-xs mt-1">โปรด Build Face Database จากนั้นกดปุ่ม "เริ่มเปิดกล้อง"</p>
+              </div>
+            </div>
+
+            <!-- Error State Message Overlay -->
+            <div id="cameraErrorOverlay" class="hidden absolute inset-0 bg-slate-950/95 flex flex-col items-center justify-center p-6 text-center space-y-3 z-20">
+              <div class="w-12 h-12 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <div>
+                <h3 id="cameraErrorTitle" class="text-red-300 font-bold text-sm">ไม่สามารถเข้าถึงกล้องได้</h3>
+                <p id="cameraErrorMessage" class="text-slate-300 text-xs mt-1 max-w-md">เหตุผล: NotAllowedError</p>
+              </div>
+              <div id="iframeHelpText" class="hidden text-xs text-amber-300/90 bg-amber-950/60 p-3 rounded-xl border border-amber-800/50 max-w-md text-left">
+                <i class="fa-solid fa-circle-info mr-1"></i>
+                <strong>ข้อแนะนำ Gemini Canvas Preview:</strong><br>
+                กล้องถูกบล็อกเพราะรันอยู่ใน Preview iframe กรุณากดดาวน์โหลดไฟล์ <code class="text-white">.html</code> นี้แล้วเปิดตรงๆ ในเบราว์เซอร์
+              </div>
+              <button onclick="startCamera()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl border border-slate-600 flex items-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span>ลองใหม่อีกครั้ง</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Camera Controls -->
+          <div class="flex items-center gap-3 w-full justify-center">
+            <button id="btnStartCamera" onclick="startCamera()" disabled
+                    class="flex-1 max-w-xs py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-600 text-white text-xs font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-play"></i>
+              <span>เริ่มเปิดกล้อง</span>
+            </button>
+            <button id="btnStopCamera" onclick="stopCamera()" disabled
+                    class="px-4 py-2.5 bg-slate-800 hover:bg-rose-600/80 disabled:bg-slate-800 disabled:text-slate-600 text-slate-300 text-xs font-bold rounded-xl border border-slate-700 transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-stop"></i>
+              <span>ปิดกล้อง</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+          <div class="bg-slate-950/80 rounded-2xl p-5 border border-slate-800 h-full flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ผลการสแกนตรวจจับ</span>
+                <span id="scanStatusBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+                  ยังไม่เริ่มสแกน
+                </span>
+              </div>
+
+              <!-- Detected Person Details -->
+              <div id="detectedPersonCard" class="flex items-start gap-4 mb-4">
+                <div class="w-20 h-20 rounded-2xl bg-slate-800 border-2 border-slate-700 overflow-hidden flex items-center justify-center shrink-0 shadow-md">
+                  <img id="detectedImg" src="" class="hidden w-full h-full object-cover">
+                  <i id="detectedPlaceholderIcon" class="fa-solid fa-user text-3xl text-slate-600"></i>
+                </div>
+
+                <div class="space-y-1.5 flex-1 min-w-0">
+                  <h3 id="detectedName" class="text-base font-bold text-slate-100 truncate">-- รอการสแกน --</h3>
+                  
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span id="detectedEmpId" class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-sky-400 border border-slate-700">ID: --</span>
+                    <span id="detectedDivision" class="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-950/80 text-indigo-300 border border-indigo-800/60">
+                      กอง/กลุ่มงาน: --
+                    </span>
                   </div>
-                  <label class="upload-label" hidden>
-                    <span>แตะเพื่อเลือกรูปลายเซ็น</span>
-                    <small>ระบบลบพื้นหลังให้อัตโนมัติ</small>
-                    <input type="file" accept="image/*">
-                  </label>
-                  <div class="uploaded-wrap" hidden>
-                    <img alt="รูปลายเซ็น">
-                    <label class="replace-image">เปลี่ยนรูป<input type="file" accept="image/*"></label>
-                  </div>
+
+                  <p id="detectedDeptPos" class="text-xs text-slate-400 truncate">แผนก: -- | ตำแหน่ง: --</p>
+                  <p id="detectedMatchScore" class="text-[11px] text-slate-500">ค่าความตรงกัน (Distance): --</p>
                 </div>
               </div>
-              <span class="signature-role"></span>
             </div>
-            <div class="mirrored-name">(........................................)</div>
-            <div class="position-row">
-              <span>ตำแหน่ง</span>
-              <input id="positionBottom" class="line-input" type="text" />
+
+            <div class="space-y-3 pt-3 border-t border-slate-800">
+              <div class="grid grid-cols-2 gap-3">
+                <button id="btnCheckIn" onclick="handleManualCheckInOut('IN')" disabled
+                        class="py-3 px-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-600 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-900/30 transition-all flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-right-to-bracket text-sm"></i>
+                  <span>บันทึก "เข้างาน"</span>
+                </button>
+                <button id="btnCheckOut" onclick="handleManualCheckInOut('OUT')" disabled
+                        class="py-3 px-4 bg-amber-600 hover:bg-amber-500 disabled:bg-slate-800 disabled:text-slate-600 text-white font-bold text-xs rounded-xl shadow-lg shadow-amber-900/30 transition-all flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-right-from-bracket text-sm"></i>
+                  <span>บันทึก "ออกงาน"</span>
+                </button>
+              </div>
+
+              <!-- Auto Scan Mode Control with Anti-Duplicate Cooldown info -->
+              <div class="flex flex-col gap-2 bg-slate-950/90 p-3 rounded-xl border border-slate-800">
+                <div class="flex items-center justify-between text-xs text-slate-300">
+                  <label for="autoCheckInToggle" class="cursor-pointer flex items-center gap-2 select-none font-semibold">
+                    <input type="checkbox" id="autoCheckInToggle" checked class="rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0">
+                    <span class="text-emerald-400">ระบบสแกนและบันทึกอัตโนมัติ (Auto Check)</span>
+                  </label>
+                  <i class="fa-solid fa-bolt text-amber-400 animate-pulse" title="โหมดสแกนอัตโนมัติเปิดใช้งานอยู่"></i>
+                </div>
+                <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
+                  <span><i class="fa-solid fa-arrows-rotate text-sky-400 mr-1"></i>ป้องกันสแกนซ้ำ: 5 นาที</span>
+                  <span id="autoScanRuleHint" class="text-amber-300 font-semibold">12:00 น. เป็นต้นไป = บันทึกออกงาน</span>
+                </div>
+              </div>
             </div>
-            <button type="button" class="clear-signature">ล้างลายเซ็น</button>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="notes">
-        <h3>หมายเหตุ</h3>
-        <p>- กรุณาส่งแบบตอบรับ ภายในวันที่ ๑๓ สิงหาคม ๒๕๖๙ ณ กองการศึกษา ทต.พระลับ</p>
-        <p>- ติดต่อประสานงาน นางสาวเพชรรัตน์ เฉลียดฉลาด โทร. ๐๘๑-๐๖๑๐๑๖๔</p>
-      </section>
+    <section class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5 pb-4 border-b border-slate-800">
+        <div>
+          <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-clock-rotate-left text-sky-400"></i>
+            ส่วนที่ 3: ประวัติและบันทึกการลงเวลา (Attendance Logs)
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            ข้อมูลจัดเก็บลง LocalStorage ถาวร พร้อมระบบคัดกรองตามกอง/กลุ่มหน่วยงาน และการส่งออก CSV/Excel
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="exportToCSV()" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5 shadow-md">
+            <i class="fa-solid fa-file-excel"></i>
+            <span>ดาวน์โหลด Excel/CSV</span>
+          </button>
+          <button onclick="confirmClearLogs()" class="px-3.5 py-2 bg-slate-800 hover:bg-rose-900/60 text-slate-300 hover:text-rose-200 text-xs font-semibold rounded-xl border border-slate-700 transition-colors flex items-center gap-1.5">
+            <i class="fa-solid fa-trash-can"></i>
+            <span>ล้างข้อมูล</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">กรองตาม กอง/หน่วยงาน</label>
+          <select id="filterDivision" onchange="renderLogsTable()" class="w-full bg-slate-950 text-xs text-slate-200 rounded-xl px-3 py-2 border border-slate-800 focus:outline-none focus:border-sky-500">
+            <option value="ALL">-- แสดงทุกหน่วยงาน --</option>
+            <option value="OFF">สำนักปลัด (OFF)</option>
+            <option value="FIN">กองคลัง (FIN)</option>
+            <option value="EDU">กองการศึกษา (EDU)</option>
+            <option value="ENG">กองช่าง (ENG)</option>
+            <option value="PHE">กองสาธารณสุขและสิ่งแวดล้อม (PHE)</option>
+            <option value="OTHER">อื่นๆ / Custom</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">ค้นหา (ชื่อ / รหัสพนักงาน)</label>
+          <div class="relative">
+            <input type="text" id="filterSearch" oninput="renderLogsTable()" placeholder="พิมพ์ชื่อ หรือ ID..." 
+                   class="w-full bg-slate-950 text-xs text-slate-200 rounded-xl pl-8 pr-3 py-2 border border-slate-800 focus:outline-none focus:border-sky-500">
+            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-500 text-xs"></i>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">กรองประเภท</label>
+          <select id="filterType" onchange="renderLogsTable()" class="w-full bg-slate-950 text-xs text-slate-200 rounded-xl px-3 py-2 border border-slate-800 focus:outline-none focus:border-sky-500">
+            <option value="ALL">-- ทุกประเภท --</option>
+            <option value="IN">เข้างาน (Check-In)</option>
+            <option value="OUT">ออกงาน (Check-Out)</option>
+          </select>
+        </div>
+
+        <div class="flex items-end">
+          <div class="w-full bg-slate-950/70 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-400 flex items-center justify-between">
+            <span>รวมทั้งหมด:</span>
+            <strong id="logCountBadge" class="text-sky-400 text-sm font-bold">0 รายการ</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-slate-800">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-950 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
+            <tr>
+              <th class="py-3 px-4">วัน-เวลา</th>
+              <th class="py-3 px-4">ประเภท</th>
+              <th class="py-3 px-4">รหัสพนักงาน</th>
+              <th class="py-3 px-4">ชื่อ-นามสกุล</th>
+              <th class="py-3 px-4">กอง / กลุ่มงาน</th>
+              <th class="py-3 px-4">ฝ่าย / ตำแหน่ง</th>
+              <th class="py-3 px-4 text-center">สถานะ Apps Script</th>
+            </tr>
+          </thead>
+          <tbody id="logsTableBody" class="divide-y divide-slate-800/60 bg-slate-900/40">
+            <!-- Dynamic Log rows injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Alert -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none max-w-md">
+    <div id="toastContent" class="bg-slate-800 text-slate-100 border border-slate-700 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+      <i id="toastIcon" class="fa-solid fa-circle-info text-sky-400 text-lg"></i>
+      <span id="toastMessage" class="text-xs font-medium">การแจ้งเตือน</span>
+    </div>
+  </div>
+
+  <!-- Clear Confirmation Modal -->
+  <div id="clearConfirmModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
+      <div class="w-12 h-12 rounded-2xl bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center justify-center text-xl mx-auto">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div class="text-center">
+        <h3 class="text-base font-bold text-slate-100">ยืนยันการล้างประวัติการลงเวลา?</h3>
+        <p class="text-xs text-slate-400 mt-1">ข้อมูลบันทึกทั้งหมดใน LocalStorage จะถูกลบออก และไม่สามารถกู้คืนได้</p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeClearModal()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700">
+          ยกเลิก
+        </button>
+        <button onclick="executeClearLogs()" class="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-rose-900/30">
+          ยืนยันลบทั้งหมด
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script>
-  (() => {
-    const fullName = document.getElementById('fullName');
-    const positionTop = document.getElementById('positionTop');
-    const positionBottom = document.getElementById('positionBottom');
-    const choices = [...document.querySelectorAll('.response-choice')];
-    const reason = document.getElementById('reason');
+    const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model/';
+    const LOCAL_STORAGE_LOGS_KEY = 'face_checkin_logs_v2';
+    const LOCAL_STORAGE_SCRIPT_KEY = 'face_checkin_script_url';
 
-    function updateMirrors(){
-      document.querySelectorAll('[data-signature]').forEach((card)=>{
-        const input=document.getElementById(card.dataset.nameInput);
-        card.querySelector('.mirrored-name').textContent='(' + ((input && input.value.trim()) || '........................................') + ')';
-      });
-    }
-    fullName.addEventListener('input', updateMirrors);
+    // Strict face recognition threshold and anti-duplicate cooldown duration
+    const STRICT_DISTANCE_THRESHOLD = 0.40; // Reduced threshold for high accuracy lock
+    const SCAN_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes cooldown per person
 
-    function syncPosition(source,target){ target.value=source.value; }
-    positionTop.addEventListener('input',()=>syncPosition(positionTop,positionBottom));
-    positionBottom.addEventListener('input',()=>syncPosition(positionBottom,positionTop));
+    // Preset Division Definitions & Automated Prefixes
+    const DIVISIONS = {
+      'OFF':   { name: 'สำนักปลัด', prefix: 'OFF' },
+      'FIN':   { name: 'กองคลัง', prefix: 'FIN' },
+      'EDU':   { name: 'กองการศึกษา', prefix: 'EDU' },
+      'ENG':   { name: 'กองช่าง', prefix: 'ENG' },
+      'PHE':   { name: 'กองสาธารณสุขและสิ่งแวดล้อม', prefix: 'PHE' },
+      'OTHER': { name: 'กำหนดเอง / อื่นๆ', prefix: 'EMP' }
+    };
 
-    choices.forEach(choice=>{
-      choice.addEventListener('change',()=>{
-        if(choice.checked) choices.forEach(other=>{if(other!==choice) other.checked=false;});
-        const notJoin=choices.find(c=>c.value==='notJoin');
-        reason.disabled=!notJoin.checked;
-        if(reason.disabled) reason.value='';
-      });
+    // App State
+    let employeeForms = [];
+    let isModelsLoaded = false;
+    let faceMatcher = null;
+    let registeredDescriptorsMap = []; // { empId, name, division, divisionCode, department, position, descriptor }
+    let mediaStream = null;
+    let isCameraScanning = false;
+    let scanIntervalId = null;
+    let currentDetectedPerson = null;
+
+    // Cooldown & Streak maps for precision and anti-duplicate scans
+    let scanCooldownsMap = {}; // { empId: timestamp }
+    let matchStreakMap = {};   // { empId: consecutiveCount }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Load saved Google Script URL
+      const savedScriptUrl = localStorage.getItem(LOCAL_STORAGE_SCRIPT_KEY);
+      if (savedScriptUrl) {
+        document.getElementById('scriptUrlInput').value = savedScriptUrl;
+      }
+
+      // Check if running inside iframe and notify user
+      if (window.self !== window.top) {
+        document.getElementById('iframeNoticeBanner').classList.remove('hidden');
+      }
+
+      // Initialize default 5 forms
+      initializeDefaultForms();
+      renderLogsTable();
+      updateShiftBadgeInfo();
+
+      // Update shift badge every minute
+      setInterval(updateShiftBadgeInfo, 60000);
     });
 
-    function removeImageBackground(file,callback){
-      const reader=new FileReader();
-      reader.onload=()=>{
-        const source=String(reader.result);
-        const image=new Image();
-        image.onload=()=>{
-          const maxDimension=1400;
-          const scale=Math.min(1,maxDimension/Math.max(image.naturalWidth,image.naturalHeight));
-          const width=Math.max(1,Math.round(image.naturalWidth*scale));
-          const height=Math.max(1,Math.round(image.naturalHeight*scale));
-          const canvas=document.createElement('canvas');
-          canvas.width=width; canvas.height=height;
-          const context=canvas.getContext('2d',{willReadFrequently:true});
-          if(!context) return callback(source);
-          context.drawImage(image,0,0,width,height);
-          const imageData=context.getImageData(0,0,width,height);
-          const data=imageData.data;
-          const cornerSize=Math.max(1,Math.round(Math.min(width,height)*0.035));
-          const samples=[];
-          [[0,0],[width-cornerSize,0],[0,height-cornerSize],[width-cornerSize,height-cornerSize]].forEach(([startX,startY])=>{
-            for(let y=startY;y<Math.min(startY+cornerSize,height);y++){
-              for(let x=startX;x<Math.min(startX+cornerSize,width);x++){
-                const i=(y*width+x)*4; samples.push([data[i],data[i+1],data[i+2]]);
+    function updateShiftBadgeInfo() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const timeStr = `${hours}:${minutes}`;
+
+      const badge = document.getElementById('currentShiftBadge');
+      const text = document.getElementById('shiftText');
+      const hint = document.getElementById('autoScanRuleHint');
+
+      if (hours < 12) {
+        badge.className = 'px-3 py-1.5 rounded-xl bg-emerald-950/80 text-emerald-300 border border-emerald-800/80 text-xs font-semibold flex items-center gap-1.5 shadow-sm';
+        text.innerHTML = `<i class="fa-solid fa-right-to-bracket text-emerald-400"></i> [${timeStr} น.] โหมด "ลงเวลาเข้างาน"`;
+        hint.textContent = 'เวลาปัจจุบัน < 12:00 น. -> สแกนแล้วบันทึก "เข้างาน"';
+      } else {
+        badge.className = 'px-3 py-1.5 rounded-xl bg-amber-950/80 text-amber-300 border border-amber-800/80 text-xs font-semibold flex items-center gap-1.5 shadow-sm';
+        text.innerHTML = `<i class="fa-solid fa-right-from-bracket text-amber-400"></i> [${timeStr} น.] โหมด "ลงเวลาออกงาน"`;
+        hint.textContent = 'เวลาปัจจุบัน ≥ 12:00 น. -> สแกนแล้วบันทึก "ออกงาน"';
+      }
+    }
+
+    function resizeImageMax640(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const maxDim = 640;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
               }
             }
-          });
-          const background=samples.reduce((sum,color)=>[
-            sum[0]+color[0]/samples.length,sum[1]+color[1]/samples.length,sum[2]+color[2]/samples.length
-          ],[0,0,0]);
-          const visited=new Uint8Array(width*height), queue=[];
-          const distance=(i)=>Math.hypot(data[i]-background[0],data[i+1]-background[1],data[i+2]-background[2]);
-          const add=(x,y)=>{
-            if(x<0||y<0||x>=width||y>=height) return;
-            const pos=y*width+x;
-            if(visited[pos]||distance(pos*4)>82) return;
-            visited[pos]=1; queue.push(pos);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            resolve(canvas.toDataURL('image/jpeg', 0.85));
           };
-          for(let x=0;x<width;x++){add(x,0);add(x,height-1);}
-          for(let y=0;y<height;y++){add(0,y);add(width-1,y);}
-          for(let cursor=0;cursor<queue.length;cursor++){
-            const pos=queue[cursor],x=pos%width,y=Math.floor(pos/width),i=pos*4,d=distance(i);
-            data[i+3]=Math.round(255*Math.max(0,Math.min(1,(d-26)/56)));
-            add(x-1,y);add(x+1,y);add(x,y-1);add(x,y+1);
-          }
-          context.putImageData(imageData,0,0);
-          callback(canvas.toDataURL('image/png'));
+          img.onerror = reject;
+          img.src = e.target.result;
         };
-        image.onerror=()=>callback(source);
-        image.src=source;
-      };
-      reader.readAsDataURL(file);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
     }
 
-    document.querySelectorAll('[data-signature]').forEach((card)=>{
-      const stage=card.querySelector('.signature-stage');
-      const canvas=card.querySelector('canvas');
-      const drawPanel=card.querySelector('.draw-panel');
-      const printImage=card.querySelector('.drawn-signature-print');
-      const uploadLabel=card.querySelector('.upload-label');
-      const uploadedWrap=card.querySelector('.uploaded-wrap');
-      const uploadedImage=uploadedWrap.querySelector('img');
-      let drawing=false,lastPoint=null,lastMidPoint=null;
+    async function loadFaceApiModels() {
+      if (isModelsLoaded) return true;
 
-      function prepareCanvas(){
-        const rect=stage.getBoundingClientRect();
-        const ratio=Math.max(window.devicePixelRatio||1,1);
-        const oldCanvas=document.createElement('canvas');
-        oldCanvas.width=canvas.width; oldCanvas.height=canvas.height;
-        if(canvas.width&&canvas.height) oldCanvas.getContext('2d').drawImage(canvas,0,0);
-        canvas.width=Math.floor(rect.width*ratio); canvas.height=Math.floor(rect.height*ratio);
-        const context=canvas.getContext('2d');
-        if(oldCanvas.width&&oldCanvas.height) context.drawImage(oldCanvas,0,0,oldCanvas.width,oldCanvas.height,0,0,canvas.width,canvas.height);
-        context.setTransform(ratio,0,0,ratio,0,0);
-        context.lineCap='round'; context.lineJoin='round'; context.strokeStyle='#0b4db8'; context.globalAlpha=.94;
+      const progressContainer = document.getElementById('buildProgressContainer');
+      const statusText = document.getElementById('buildStatusText');
+      progressContainer.classList.remove('hidden');
+      statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลด AI Models (TinyFaceDetector)...`;
+
+      const loadPromise = Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+      ]);
+
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('โมเดล AI โหลดเกินเวลา 30 วินาที กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต')), 30000);
+      });
+
+      try {
+        await Promise.race([loadPromise, timeoutPromise]);
+        isModelsLoaded = true;
+        return true;
+      } catch (err) {
+        console.error('Model loading failed:', err);
+        alert(`เกิดข้อผิดพลาดในการโหลดโมเดล AI: ${err.message}`);
+        progressContainer.classList.add('hidden');
+        return false;
       }
-      function point(event){
-        const rect=canvas.getBoundingClientRect();
-        const pressure=event.pressure>0?event.pressure:.5;
-        return {x:event.clientX-rect.left,y:event.clientY-rect.top,pressure};
+    }
+
+    async function buildFaceDatabase() {
+      // Filter only forms that have uploaded photos
+      const validForms = employeeForms.filter(f => f.photoBase64);
+
+      if (validForms.length === 0) {
+        alert('กรุณาอัปโหลดรูปถ่ายพนักงานอย่างน้อย 1 คน ก่อนทำการ Build Face Database');
+        return;
       }
-      const midpoint=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
-      const inkWidth=(pressure)=>1.35+Math.min(Math.max(pressure,0),1)*.75;
-      function drawDot(p){
-        const context=canvas.getContext('2d'); context.save(); context.fillStyle='#0b4db8'; context.globalAlpha=.94;
-        context.beginPath(); context.arc(p.x,p.y,inkWidth(p.pressure)/2,0,Math.PI*2); context.fill(); context.restore();
-      }
-      function drawTo(p){
-        if(!lastPoint) return;
-        const context=canvas.getContext('2d'), mid=midpoint(lastPoint,p);
-        context.beginPath(); context.moveTo(lastMidPoint?lastMidPoint.x:lastPoint.x,lastMidPoint?lastMidPoint.y:lastPoint.y);
-        context.quadraticCurveTo(lastPoint.x,lastPoint.y,mid.x,mid.y);
-        context.lineWidth=inkWidth((lastPoint.pressure+p.pressure)/2); context.stroke();
-        lastPoint=p; lastMidPoint=mid;
-      }
-      function finishDrawing(){
-        const context=canvas.getContext('2d',{willReadFrequently:true});
-        const {width,height}=canvas, pixels=context.getImageData(0,0,width,height);
-        let minX=width,minY=height,maxX=-1,maxY=-1;
-        for(let y=0;y<height;y++) for(let x=0;x<width;x++){
-          if(pixels.data[(y*width+x)*4+3]===0) continue;
-          minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);
+
+      const successModels = await loadFaceApiModels();
+      if (!successModels) return;
+
+      const progressContainer = document.getElementById('buildProgressContainer');
+      const statusText = document.getElementById('buildStatusText');
+      const progressBar = document.getElementById('buildProgressBar');
+      const percentText = document.getElementById('buildPercentText');
+
+      progressContainer.classList.remove('hidden');
+      registeredDescriptorsMap = [];
+      const labeledDescriptors = [];
+
+      let processedCount = 0;
+      let missedFaces = [];
+
+      for (let i = 0; i < validForms.length; i++) {
+        const form = validForms[i];
+        statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> สกัดใบหน้า: ${form.name} (${form.empId})...`;
+        
+        const percent = Math.round(((i + 1) / validForms.length) * 100);
+        progressBar.style.width = `${percent}%`;
+        percentText.textContent = `${percent}%`;
+
+        // Yield UI to avoid browser freezing
+        await new Promise(r => setTimeout(r, 20));
+
+        try {
+          const imgEl = await faceapi.fetchImage(form.photoBase64);
+          const detection = await faceapi.detectSingleFace(imgEl, new faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.4 }))
+                                         .withFaceLandmarks()
+                                         .withFaceDescriptor();
+
+          if (detection) {
+            registeredDescriptorsMap.push({
+              empId: form.empId,
+              name: form.name || 'ไม่ระบุชื่อ',
+              divisionCode: form.divisionCode,
+              divisionName: form.divisionName,
+              department: form.department || 'ไม่ระบุ',
+              position: form.position || 'ไม่ระบุ',
+              photoBase64: form.photoBase64,
+              descriptor: detection.descriptor
+            });
+
+            labeledDescriptors.push(new faceapi.LabeledFaceDescriptors(form.empId, [detection.descriptor]));
+            processedCount++;
+          } else {
+            missedFaces.push(`${form.empId} - ${form.name}`);
+          }
+        } catch (err) {
+          console.error(`Error processing ${form.empId}:`, err);
+          missedFaces.push(`${form.empId} - ${form.name}`);
         }
-        if(maxY<0) return;
-        const ratio=width/Math.max(canvas.getBoundingClientRect().width,1);
-        const ink=context.getImageData(minX,minY,maxX-minX+1,maxY-minY+1);
-        const sourceCanvas=document.createElement('canvas'); sourceCanvas.width=ink.width; sourceCanvas.height=ink.height;
-        sourceCanvas.getContext('2d').putImageData(ink,0,0);
-        const padding=Math.max(2,Math.round(2*ratio));
-        const exportCanvas=document.createElement('canvas'); exportCanvas.width=ink.width+padding*2; exportCanvas.height=ink.height+padding*2;
-        exportCanvas.getContext('2d').drawImage(sourceCanvas,padding,padding);
-        printImage.src=exportCanvas.toDataURL('image/png');
       }
 
-      canvas.addEventListener('pointerdown',(event)=>{
-        event.preventDefault(); canvas.setPointerCapture(event.pointerId); drawing=true; printImage.removeAttribute('src');
-        lastPoint=point(event); lastMidPoint=null; drawDot(lastPoint);
+      if (labeledDescriptors.length > 0) {
+        // Create face matcher with strict distance threshold (0.40) for precision lock
+        faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, STRICT_DISTANCE_THRESHOLD);
+        document.getElementById('btnStartCamera').disabled = false;
+        showToast(`สร้างฐานข้อมูลสำเร็จ ${processedCount} รายการ (ล็อคความแม่นยำสูงพร้อมใช้งาน)`, 'success');
+      } else {
+        showToast('ไม่พบใบหน้าตรงตามเงื่อนไขในรูปที่อัปโหลด', 'error');
+      }
+
+      if (missedFaces.length > 0) {
+        alert(`ไม่สามารถตรวจจับใบหน้าในรูปของพนักงานต่อไปนี้:\n- ${missedFaces.join('\n- ')}\nกรุณาเปลี่ยนรูปถ่ายที่เห็นใบหน้าชัดเจน`);
+      }
+
+      statusText.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> สร้างฐานข้อมูลใบหน้าเสร็จสิ้น (${processedCount}/${validForms.length} คน)`;
+    }
+
+    async function startCamera() {
+      if (!isModelsLoaded || !faceMatcher) {
+        showToast('กรุณา Build Face Database ก่อนเปิดกล้อง', 'warning');
+        return;
+      }
+
+      const video = document.getElementById('webcam');
+      const placeholder = document.getElementById('cameraPlaceholder');
+      const errorOverlay = document.getElementById('cameraErrorOverlay');
+
+      errorOverlay.classList.add('hidden');
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+            facingMode: 'user'
+          },
+          audio: false
+        });
+
+        mediaStream = stream;
+        video.srcObject = stream;
+        placeholder.classList.add('hidden');
+
+        video.onloadedmetadata = () => {
+          isCameraScanning = true;
+          document.getElementById('btnStartCamera').disabled = true;
+          document.getElementById('btnStopCamera').disabled = false;
+          showToast('เปิดกล้องสำเร็จ กำลังเริ่มสแกน Real-time', 'success');
+          startScanLoop();
+        };
+
+      } catch (err) {
+        console.error('Camera access error:', err);
+        handleCameraError(err);
+      }
+    }
+
+    function handleCameraError(err) {
+      const errorOverlay = document.getElementById('cameraErrorOverlay');
+      const errTitle = document.getElementById('cameraErrorTitle');
+      const errMsg = document.getElementById('cameraErrorMessage');
+      const iframeHelp = document.getElementById('iframeHelpText');
+
+      errorOverlay.classList.remove('hidden');
+      errTitle.textContent = `ไม่สามารถเข้าถึงกล้องได้ (${err.name || 'Error'})`;
+
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        errMsg.textContent = 'สาเหตุ: ผู้ใช้ปฏิเสธการเข้าถึงกล้อง หรือถูกบล็อกโดย Browser Security Policy';
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        errMsg.textContent = 'สาเหตุ: ไม่พบอุปกรณ์กล้องเชื่อมต่อกับคอมพิวเตอร์/มือถือของคุณ';
+      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+        errMsg.textContent = 'สาเหตุ: กล้องกำลังถูกใช้งานโดยโปรแกรมหรือแอปพลิเคชันอื่นอยู่';
+      } else {
+        errMsg.textContent = `สาเหตุ: ${err.message || 'เกิดปัญหาขัดข้องในการเปิดอุปกรณ์กล้อง'}`;
+      }
+
+      if (window.self !== window.top) {
+        iframeHelp.classList.remove('hidden');
+      } else {
+        iframeHelp.classList.add('hidden');
+      }
+    }
+
+    function stopCamera() {
+      isCameraScanning = false;
+      if (scanIntervalId) clearInterval(scanIntervalId);
+
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        mediaStream = null;
+      }
+
+      const video = document.getElementById('webcam');
+      video.srcObject = null;
+
+      document.getElementById('cameraPlaceholder').classList.remove('hidden');
+      document.getElementById('btnStartCamera').disabled = false;
+      document.getElementById('btnStopCamera').disabled = true;
+
+      // Clear canvas overlay
+      const canvas = document.getElementById('overlayCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      resetDetectedCard();
+      showToast('ปิดใช้งานกล้องเรียบร้อย', 'info');
+    }
+
+    function startScanLoop() {
+      const video = document.getElementById('webcam');
+      const canvas = document.getElementById('overlayCanvas');
+
+      scanIntervalId = setInterval(async () => {
+        if (!isCameraScanning || video.paused || video.ended) return;
+
+        // Match canvas dimension with video feed
+        if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+        }
+
+        const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.5 });
+        const detections = await faceapi.detectAllFaces(video, options)
+                                        .withFaceLandmarks()
+                                        .withFaceDescriptors();
+
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const resizedDetections = faceapi.resizeResults(detections, { width: canvas.width, height: canvas.height });
+
+        if (resizedDetections.length === 0) {
+          matchStreakMap = {}; // Reset streaks when no face detected
+          resetDetectedCard();
+          return;
+        }
+
+        let bestMatchFound = null;
+
+        resizedDetections.forEach(det => {
+          const match = faceMatcher.matchDescriptor(det.descriptor);
+          const box = det.detection.box;
+
+          let boxColor = '#ef4444'; // Red for unknown
+          let labelText = 'Unknown (ไม่ผ่านเกณฑ์ยึดถือ)';
+
+          // Strict accuracy check (distance <= 0.40)
+          if (match.label !== 'unknown' && match.distance <= STRICT_DISTANCE_THRESHOLD) {
+            const matchedEmp = registeredDescriptorsMap.find(m => m.empId === match.label);
+            if (matchedEmp) {
+              boxColor = '#10b981'; // Emerald Green for strict match
+              const matchAccuracyPercent = Math.round((1 - match.distance) * 100);
+              labelText = `${matchedEmp.name} (${matchedEmp.empId}) - ${matchAccuracyPercent}% Match`;
+              bestMatchFound = { matchedEmp, distance: match.distance };
+            }
+          }
+
+          // Draw Bounding Box (Flip horizontally due to mirrored camera view)
+          ctx.strokeStyle = boxColor;
+          ctx.lineWidth = 3.5;
+          ctx.strokeRect(canvas.width - box.x - box.width, box.y, box.width, box.height);
+
+          // Draw Label Tag
+          ctx.fillStyle = boxColor;
+          ctx.font = 'bold 13px Sarabun, sans-serif';
+          const textWidth = ctx.measureText(labelText).width;
+          ctx.fillRect(canvas.width - box.x - box.width, box.y - 26, textWidth + 12, 26);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(labelText, canvas.width - box.x - box.width + 6, box.y - 8);
+        });
+
+        if (bestMatchFound) {
+          const emp = bestMatchFound.matchedEmp;
+          updateDetectedCard(emp, bestMatchFound.distance);
+
+          // Precision Lock: require face detected consistently across at least 2 consecutive frames
+          matchStreakMap[emp.empId] = (matchStreakMap[emp.empId] || 0) + 1;
+
+          if (matchStreakMap[emp.empId] >= 2) {
+            const autoCheckInEnabled = document.getElementById('autoCheckInToggle').checked;
+            const now = Date.now();
+            const lastScan = scanCooldownsMap[emp.empId] || 0;
+            const timeSinceLastScan = now - lastScan;
+
+            // Check Cooldown (5 minutes = 300,000 ms)
+            if (autoCheckInEnabled) {
+              if (timeSinceLastScan >= SCAN_COOLDOWN_MS) {
+                // Determine Auto Type based on time: < 12:00 -> IN, >= 12:00 -> OUT
+                const currentHour = new Date().getHours();
+                const autoType = currentHour < 12 ? 'IN' : 'OUT';
+
+                // Record Attendance
+                recordAttendance(autoType, emp);
+                scanCooldownsMap[emp.empId] = now; // Set cooldown
+              } else {
+                // Show Cooldown status message
+                const remainingSec = Math.ceil((SCAN_COOLDOWN_MS - timeSinceLastScan) / 1000);
+                const remainingMin = Math.floor(remainingSec / 60);
+                const remSecStr = remainingSec % 60;
+                
+                const badge = document.getElementById('scanStatusBadge');
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-sky-950 text-sky-400 border border-sky-800 flex items-center gap-1.5';
+                badge.innerHTML = `<i class="fa-solid fa-circle-check text-sky-400"></i> บันทึกแล้ว (พักสแกนซ้ำอีก ${remainingMin}:${String(remSecStr).padStart(2, '0')} นาที)`;
+              }
+            }
+          }
+        } else {
+          matchStreakMap = {};
+          resetDetectedCard();
+        }
+
+      }, 200);
+    }
+
+        let bestMatchFound = null;
+
+        resizedDetections.forEach(det => {
+          const match = faceMatcher.matchDescriptor(det.descriptor);
+          const box = det.detection.box;
+
+          let boxColor = '#ef4444'; // Red for unknown
+          let labelText = 'Unknown';
+
+          if (match.label !== 'unknown') {
+            const matchedEmp = registeredDescriptorsMap.find(m => m.empId === match.label);
+            if (matchedEmp) {
+              boxColor = '#10b981'; // Green for match
+              labelText = `${matchedEmp.name} (${matchedEmp.empId}) - ${matchedEmp.divisionCode}`;
+              bestMatchFound = { matchedEmp, distance: match.distance };
+            }
+          }
+
+          // Draw Bounding Box (Flip horizontally due to mirrored camera view)
+          ctx.strokeStyle = boxColor;
+          ctx.lineWidth = 3;
+          ctx.strokeRect(canvas.width - box.x - box.width, box.y, box.width, box.height);
+
+          // Draw Label Tag
+          ctx.fillStyle = boxColor;
+          ctx.font = 'bold 14px Sarabun, sans-serif';
+          const textWidth = ctx.measureText(labelText).width;
+          ctx.fillRect(canvas.width - box.x - box.width, box.y - 26, textWidth + 12, 26);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(labelText, canvas.width - box.x - box.width + 6, box.y - 8);
+        });
+
+        if (bestMatchFound) {
+          updateDetectedCard(bestMatchFound.matchedEmp, bestMatchFound.distance);
+          
+          // Auto Check-In handler (throttled every 5 seconds)
+          const autoCheckInEnabled = document.getElementById('autoCheckInToggle').checked;
+          const now = Date.now();
+          if (autoCheckInEnabled && (now - lastAutoCheckInTime > 5000)) {
+            lastAutoCheckInTime = now;
+            recordAttendance('IN', bestMatchFound.matchedEmp);
+          }
+        } else {
+          resetDetectedCard();
+        }
+
+      }, 250);
+    }
+
+    function updateDetectedCard(emp, distance) {
+      currentDetectedPerson = emp;
+
+      document.getElementById('detectedName').textContent = emp.name;
+      document.getElementById('detectedEmpId').textContent = `ID: ${emp.empId}`;
+      document.getElementById('detectedDivision').textContent = `กอง/กลุ่มงาน: ${emp.divisionName}`;
+      document.getElementById('detectedDeptPos').textContent = `ฝ่าย: ${emp.department} | ตำแหน่ง: ${emp.position}`;
+      document.getElementById('detectedMatchScore').textContent = `ค่าความตรงกัน (Distance): ${distance.toFixed(3)}`;
+
+      const imgEl = document.getElementById('detectedImg');
+      const iconEl = document.getElementById('detectedPlaceholderIcon');
+      if (emp.photoBase64) {
+        imgEl.src = emp.photoBase64;
+        imgEl.classList.remove('hidden');
+        iconEl.classList.add('hidden');
+      }
+
+      const badge = document.getElementById('scanStatusBadge');
+      badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1.5';
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> ยืนยันตัวตนสำเร็จ`;
+
+      document.getElementById('btnCheckIn').disabled = false;
+      document.getElementById('btnCheckOut').disabled = false;
+    }
+
+    function resetDetectedCard() {
+      currentDetectedPerson = null;
+
+      document.getElementById('detectedName').textContent = '-- รอการสแกน --';
+      document.getElementById('detectedEmpId').textContent = 'ID: --';
+      document.getElementById('detectedDivision').textContent = 'กอง/กลุ่มงาน: --';
+      document.getElementById('detectedDeptPos').textContent = 'แผนก: -- | ตำแหน่ง: --';
+      document.getElementById('detectedMatchScore').textContent = 'ค่าความตรงกัน (Distance): --';
+
+      const imgEl = document.getElementById('detectedImg');
+      const iconEl = document.getElementById('detectedPlaceholderIcon');
+      imgEl.classList.add('hidden');
+      iconEl.classList.remove('hidden');
+
+      const badge = document.getElementById('scanStatusBadge');
+      badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 flex items-center gap-1.5';
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-500"></span> กำลังค้นหาใบหน้า...`;
+
+      document.getElementById('btnCheckIn').disabled = true;
+      document.getElementById('btnCheckOut').disabled = true;
+    }
+
+    function handleManualCheckInOut(type) {
+      if (!currentDetectedPerson) {
+        showToast('กรุณารอระบบสแกนพบใบหน้าพนักงานก่อนกดบันทึก', 'warning');
+        return;
+      }
+      recordAttendance(type, currentDetectedPerson);
+    }
+
+    function recordAttendance(type, emp) {
+      const timestamp = new Date().toLocaleString('th-TH', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
       });
-      canvas.addEventListener('pointermove',(event)=>{
-        if(!drawing) return; event.preventDefault();
-        const events=event.getCoalescedEvents?event.getCoalescedEvents():[event]; events.forEach(item=>drawTo(point(item)));
-      });
-      const stop=(event)=>{
-        if(!drawing) return; if(event.type==='pointerup') drawTo(point(event)); drawing=false; lastPoint=null; lastMidPoint=null; finishDrawing();
+
+      const logEntry = {
+        id: Date.now(),
+        timestamp: timestamp,
+        type: type, // 'IN' or 'OUT'
+        empId: emp.empId,
+        name: emp.name,
+        divisionCode: emp.divisionCode,
+        divisionName: emp.divisionName,
+        department: emp.department,
+        position: emp.position,
+        syncStatus: 'pending'
       };
-      canvas.addEventListener('pointerup',stop); canvas.addEventListener('pointercancel',stop);
 
-      card.querySelector('.clear-signature').addEventListener('click',()=>{
-        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height); printImage.removeAttribute('src');
-        uploadedImage.removeAttribute('src');
-        card.querySelectorAll('input[type="file"]').forEach(i=>i.value='');
-        const drawButton=card.querySelector('.signature-tabs button[data-mode="draw"]'); drawButton.click();
-      });
+      // 1. Primary Save to LocalStorage
+      const existingLogs = getSavedLogs();
+      existingLogs.unshift(logEntry);
+      localStorage.setItem(LOCAL_STORAGE_LOGS_KEY, JSON.stringify(existingLogs));
 
-      card.querySelectorAll('.signature-tabs button').forEach((button)=>{
-        button.addEventListener('click',()=>{
-          card.querySelectorAll('.signature-tabs button').forEach(item=>item.classList.toggle('active',item===button));
-          const upload=button.dataset.mode==='upload';
-          drawPanel.hidden=upload; uploadLabel.hidden=!upload||uploadedImage.hasAttribute('src'); uploadedWrap.hidden=!upload||!uploadedImage.hasAttribute('src');
-          if(!upload) prepareCanvas();
+      showToast(`บันทึกเวลา "${type === 'IN' ? 'เข้างาน' : 'ออกงาน'}" สำเร็จ: ${emp.name}`, 'success');
+      renderLogsTable();
+
+      // 2. Background Sync to Google Apps Script (if configured)
+      const scriptUrl = localStorage.getItem(LOCAL_STORAGE_SCRIPT_KEY);
+      if (scriptUrl) {
+        syncToGoogleScript(scriptUrl, logEntry);
+      }
+    }
+
+    function getSavedLogs() {
+      try {
+        const raw = localStorage.getItem(LOCAL_STORAGE_LOGS_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error('Failed to parse logs from LocalStorage', e);
+        return [];
+      }
+    }
+
+    async function syncToGoogleScript(url, logEntry) {
+      const payload = {
+        timestamp: logEntry.timestamp,
+        type: logEntry.type === 'IN' ? 'เข้างาน' : 'ออกงาน',
+        empId: logEntry.empId,
+        name: logEntry.name,
+        division: logEntry.divisionName,
+        department: logEntry.department,
+        position: logEntry.position
+      };
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 seconds timeout
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
+        updateLogSyncStatus(logEntry.id, 'synced');
+      } catch (err) {
+        console.warn('Apps Script sync timeout or error:', err);
+        updateLogSyncStatus(logEntry.id, 'offline');
+      }
+    }
+
+    function updateLogSyncStatus(logId, status) {
+      const logs = getSavedLogs();
+      const idx = logs.findIndex(l => l.id === logId);
+      if (idx !== -1) {
+        logs[idx].syncStatus = status;
+        localStorage.setItem(LOCAL_STORAGE_LOGS_KEY, JSON.stringify(logs));
+        renderLogsTable();
+      }
+    }
+
+    function saveScriptUrl() {
+      const val = document.getElementById('scriptUrlInput').value.trim();
+      localStorage.setItem(LOCAL_STORAGE_SCRIPT_KEY, val);
+      showToast('บันทึก Google Apps Script URL เรียบร้อย', 'success');
+    }
+
+    function renderLogsTable() {
+      const logs = getSavedLogs();
+      const tbody = document.getElementById('logsTableBody');
+      tbody.innerHTML = '';
+
+      const filterDiv = document.getElementById('filterDivision').value;
+      const filterSearch = document.getElementById('filterSearch').value.toLowerCase().trim();
+      const filterType = document.getElementById('filterType').value;
+
+      const filteredLogs = logs.filter(log => {
+        // Division filter
+        if (filterDiv !== 'ALL' && log.divisionCode !== filterDiv) return false;
+        // Type filter
+        if (filterType !== 'ALL' && log.type !== filterType) return false;
+        // Search filter (Name or EmpID)
+        if (filterSearch) {
+          const matchName = log.name.toLowerCase().includes(filterSearch);
+          const matchId = log.empId.toLowerCase().includes(filterSearch);
+          if (!matchName && !matchId) return false;
+        }
+        return true;
       });
 
-      card.querySelectorAll('input[type="file"]').forEach((input)=>{
-        input.addEventListener('change',()=>{
-          const file=input.files&&input.files[0]; if(!file) return;
-          removeImageBackground(file,(source)=>{uploadedImage.src=source;uploadLabel.hidden=true;uploadedWrap.hidden=false;});
-        });
+      document.getElementById('logCountBadge').textContent = `${filteredLogs.length} รายการ`;
+
+      if (filteredLogs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-8 text-center text-slate-500 text-xs">
+              <i class="fa-solid fa-inbox text-2xl mb-2 block text-slate-600"></i>
+              ไม่พบประวัติการลงเวลา
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filteredLogs.forEach(log => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/40 transition-colors';
+
+        const typeBadge = log.type === 'IN' 
+          ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">เข้างาน</span>`
+          : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-950 text-amber-400 border border-amber-800">ออกงาน</span>`;
+
+        let syncBadge = `<span class="text-slate-500" title="ยังไม่ได้ส่ง"><i class="fa-solid fa-circle-notch fa-spin"></i></span>`;
+        if (log.syncStatus === 'synced') {
+          syncBadge = `<span class="text-emerald-400" title="ส่งขึ้น Apps Script เรียบร้อย"><i class="fa-solid fa-cloud-check"></i></span>`;
+        } else if (log.syncStatus === 'offline') {
+          syncBadge = `<span class="text-slate-400" title="เก็บลงเครื่อง Local Only"><i class="fa-solid fa-hard-drive"></i></span>`;
+        }
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono text-[11px] text-slate-300 whitespace-nowrap">${log.timestamp}</td>
+          <td class="py-2.5 px-4">${typeBadge}</td>
+          <td class="py-2.5 px-4 font-mono text-sky-400 font-bold">${log.empId}</td>
+          <td class="py-2.5 px-4 font-semibold text-slate-200">${log.name}</td>
+          <td class="py-2.5 px-4">
+            <span class="px-2 py-0.5 rounded bg-indigo-950/60 text-indigo-300 border border-indigo-800/50 text-[10px] font-semibold">
+              ${log.divisionName || log.divisionCode}
+            </span>
+          </td>
+          <td class="py-2.5 px-4 text-slate-400">${log.department} / ${log.position}</td>
+          <td class="py-2.5 px-4 text-center">${syncBadge}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function exportToCSV() {
+      const logs = getSavedLogs();
+      if (logs.length === 0) {
+        showToast('ไม่มีข้อมูลการลงเวลาสำหรับดาวน์โหลด', 'warning');
+        return;
+      }
+
+      // UTF-8 BOM Header for Thai Excel compatibility
+      let csvContent = '\uFEFF';
+      csvContent += 'ลำดับ,วัน-เวลา,ประเภท,รหัสพนักงาน,ชื่อ-นามสกุล,กอง/กลุ่มหน่วยงาน,ฝ่าย/งาน,ตำแหน่ง\n';
+
+      logs.forEach((log, i) => {
+        const typeStr = log.type === 'IN' ? 'เข้างาน' : 'ออกงาน';
+        csvContent += `"${i + 1}","${log.timestamp}","${typeStr}","${log.empId}","${log.name}","${log.divisionName}","${log.department}","${log.position}"\n`;
       });
 
-      prepareCanvas();
-      window.addEventListener('resize',()=>{ if(!drawPanel.hidden) prepareCanvas(); });
-    });
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      
+      const fileName = `attendance_log_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-    window.saveAsPDF=function(){ alert('เลือกเครื่องพิมพ์ “บันทึกเป็น PDF” หรือ “Save as PDF” ในหน้าต่างถัดไป'); window.print(); };
-    updateMirrors();
-  })();
+      // Delay revokeObjectURL by 1.5s to ensure download starts reliably
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 1500);
+
+      showToast(`ส่งออกไฟล์ ${fileName} เรียบร้อย`, 'success');
+    }
+
+    function confirmClearLogs() {
+      document.getElementById('clearConfirmModal').classList.remove('hidden');
+    }
+
+    function closeClearModal() {
+      document.getElementById('clearConfirmModal').classList.add('hidden');
+    }
+
+    function executeClearLogs() {
+      localStorage.removeItem(LOCAL_STORAGE_LOGS_KEY);
+      renderLogsTable();
+      closeClearModal();
+      showToast('ล้างประวัติการลงเวลาทั้งหมดเรียบร้อยแล้ว', 'info');
+    }
   </script>
-
 </body>
+</html>
